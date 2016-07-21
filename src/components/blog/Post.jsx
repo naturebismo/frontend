@@ -7,7 +7,7 @@ import Helmet from 'react-helmet';
 import {FormattedMessage} from 'react-intl';
 
 import LikeDislikeButtons from '../likes/buttons';
-import CommentAdd from '../comments/add';;
+import CommentCreate from '../comments/add';
 import CommentsList from '../comments/list';
 import PostDelete from './PostDelete';
 
@@ -70,8 +70,8 @@ class Post extends React.Component {
         </article>
 
         <div className="list-group">
-          <CommentAdd />
-          <CommentsList />
+          <CommentCreate viewer={this.props.viewer} parent={this.props.post} />
+          <CommentsList viewer={this.props.viewer} parent={this.props.post} />
         </div>
       </div>
     );
@@ -104,6 +104,7 @@ export default Relay.createContainer(Post, {
           }
         }
         ${PostDelete.getFragment('post')},
+        ${CommentsList.getFragment('parent')},
       }
     `,
     viewer: () => Relay.QL`
@@ -112,6 +113,8 @@ export default Relay.createContainer(Post, {
         me {
           isAuthenticated
         },
+        ${CommentCreate.getFragment('viewer')},
+        ${CommentsList.getFragment('viewer')},
         ${PostDelete.getFragment('viewer')},
       }
     `,

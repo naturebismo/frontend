@@ -6,7 +6,7 @@ import Helmet from 'react-helmet';
 
 
 class PostCreate extends React.Component {
-  state = {url: '', title: '', body: '', publishedAt: new Date().toJSON().split(".")[0], 'tags': ''};
+  state = {url: '', title: '', body: '', publishedAt: new Date().toJSON().split(".")[0], 'tags': ''}
 
   handleURLChange = (e) => {
     this.setState({url: e.target.value});

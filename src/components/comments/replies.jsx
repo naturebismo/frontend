@@ -4,7 +4,7 @@ import { Media } from "react-bootstrap";
 
 import CommentItem from './item';
 
-class CommentsList extends React.Component {
+class CommentsReplies extends React.Component {
   render() {
     var parent = this.props.parent;
     var viewer = this.props.viewer;
@@ -22,10 +22,10 @@ class CommentsList extends React.Component {
   }
 }
 
-export default Relay.createContainer(CommentsList, {
+export default Relay.createContainer(CommentsReplies, {
   fragments: {
     parent: () => Relay.QL`
-      fragment on Post {
+      fragment on Comment {
         comments(first: 50) {
           edges {
             node {
