@@ -55,7 +55,7 @@ class Post extends React.Component {
               var tag = edge.node;
               return (<Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link>);
             })}<br/>
-            <a href="#">9 gostaram</a> . <a href="#">1 não gostou</a> . <a href="#">9 comentarios</a> . enviada por <a href="#">{ post.revisionCreated.author.username }</a> <i className="fa fa-clock-o" aria-hidden="true"></i> <PostDate date={post.publishedAt} />
+            <a href="#">9 gostaram</a> . <a href="#">1 não gostou</a> . <a href="#">{post.numComments} comentarios</a> . enviada por <a href="#">{ post.revisionCreated.author.username }</a> <i className="fa fa-clock-o" aria-hidden="true"></i> <PostDate date={post.publishedAt} />
           </div>
           
           <div id="postBody">
@@ -103,6 +103,7 @@ export default Relay.createContainer(Post, {
             username
           }
         }
+        numComments,
         ${PostDelete.getFragment('post')},
         ${CommentsList.getFragment('parent')},
       }

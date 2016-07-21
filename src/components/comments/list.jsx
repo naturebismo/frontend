@@ -10,11 +10,11 @@ class CommentsList extends React.Component {
     var viewer = this.props.viewer;
 
     return (
-      <div className="list-group-item">
+      <div>
         {parent.comments.edges.map(function(edge, i){
           var comment = edge.node;
           return (
-            <CommentItem key={i} viewer={viewer} comment={comment} />
+            <CommentItem key={comment.id} viewer={viewer} comment={comment} />
           );
         })}
       </div>
@@ -29,6 +29,7 @@ export default Relay.createContainer(CommentsList, {
         comments(first: 50) {
           edges {
             node {
+              id,
               ${CommentItem.getFragment('comment')},
             }
           }

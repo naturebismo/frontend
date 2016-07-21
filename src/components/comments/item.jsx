@@ -1,6 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
-import { Media } from "react-bootstrap";
+import { Media, Button } from "react-bootstrap";
 
 import LikeDislikeButtons from '../likes/buttons';
 import CommentCreate from '../comments/add';
@@ -8,9 +8,43 @@ import CommentsReplies from './replies';
 
 
 class CommentItem extends React.Component {
+  state = {replyFormExpanded: false}
+
   handleShowReplies = (e) => {
     e.preventDefault();
     this.props.relay.setVariables({expanded: true});
+  }
+
+  handleHideReplies = (e) => {
+    e.preventDefault();
+    this.props.relay.setVariables({expanded: false});
+  }
+
+  handleToggleReplies = (e) => {
+    if (this.props.relay.variables.expanded) {
+      this.handleHideReplies(e);
+    } else {
+      this.handleShowReplies(e);
+    }
+  }
+
+  handleToggleReplyForm = (e) => {
+    e.preventDefault();
+
+    if(this.state.replyFormExpanded) {
+      this.handleHideReplyForm();
+    } else {
+      this.setState({replyFormExpanded: true});
+      this.handleShowReplies(e);
+    }
+  }
+
+  handleHideReplyForm = () => {
+    this.setState({replyFormExpanded: false});
+  }
+
+  handleReplyFocus = (input) => {
+    input.focus();
   }
 
   render() {
@@ -21,17 +55,33 @@ class CommentItem extends React.Component {
       replies = (<CommentsReplies viewer={this.props.viewer} parent={this.props.comment} />);
     }
 
+    var repliesCount;
+    if(comment.numComments >= 1) {
+      repliesCount = (<Button bsStyle="info" className="list-group-item list-group-item-info" onClick={this.handleToggleReplies}>{comment.numComments} respostas</Button>);
+    }
+
+    var replyForm;
+    if(this.state.replyFormExpanded) {
+      replyForm = (<CommentCreate viewer={this.props.viewer} parent={this.props.comment}
+        onShown={this.handleReplyFocus}
+        onSuccess={this.handleHideReplyForm} />);
+    }
+
     return (
-      <Media>
+      <Media className="list-group-item">
         <Media.Left>
           <img width={64} height={64} src="/assets/thumbnail.png" alt="Image"/>
         </Media.Left>
         <Media.Body>
           <Media.Heading><a href="#">{ comment.revisionCreated.author.username }</a></Media.Heading>
           <p>{ comment.body }</p>
-          <LikeDislikeButtons /> <a href="#" onClick={this.handleShowReplies}>{comment.numComments} replies</a>
-          <CommentCreate viewer={this.props.viewer} parent={this.props.comment} />
-          {replies}
+          <LikeDislikeButtons /> <a href="#" onClick={this.handleToggleReplyForm}>responder</a>
+          
+          <div className="list-group">
+            {replyForm}
+            {repliesCount}
+            {replies}
+          </div>
         </Media.Body>
       </Media>
     );

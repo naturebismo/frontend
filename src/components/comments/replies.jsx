@@ -14,7 +14,7 @@ class CommentsReplies extends React.Component {
         {parent.comments.edges.map(function(edge, i){
           var comment = edge.node;
           return (
-            <CommentItem key={i} viewer={viewer} comment={comment} />
+            <CommentItem key={comment.id} viewer={viewer} comment={comment} />
           );
         })}
       </div>
@@ -29,6 +29,7 @@ export default Relay.createContainer(CommentsReplies, {
         comments(first: 50) {
           edges {
             node {
+              id,
               ${CommentItem.getFragment('comment')},
             }
           }

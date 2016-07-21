@@ -13,19 +13,39 @@ class CommentCreate extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+
     Relay.Store.commitUpdate(
       new CommentCreateMutation({
           body: this.state.body,
           parent: this.props.parent,
-          viewer: this.props.viewer})
+          viewer: this.props.viewer}),
+      {
+        onSuccess: (response) => {
+          this.setState({body: ''});
+
+          if(typeof this.props.onSuccess !== 'undefined') {
+            this.props.onSuccess();
+          }
+        },
+      }
     );
+  }
+
+  componentDidMount() {
+    if(typeof this.props.onShown !== 'undefined') {
+      this.props.onShown(this.refs.body);
+    }
   }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit} className="list-group-item">
         <FormGroup controlId="formControlsTextarea">
-          <FormControl componentClass="textarea" rows="2" placeholder="Deixe seu comentário"  onChange={this.handleBodyChange} />
+          <textarea rows="2" placeholder="Deixe seu comentário" className="form-control"
+            onChange={this.handleBodyChange}
+            value={this.state.body}
+            ref="body"
+          />
         </FormGroup>
 
         <Button type="submit">enviar comentário</Button>

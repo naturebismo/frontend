@@ -21,13 +21,11 @@ export default class CommentCreateMutation extends Relay.Mutation {
         parent {
           ... on Post {
             id,
-            numComments,
             comments
           }
 
           ... on Comment {
             id,
-            numComments,
             comments
           }
         }
