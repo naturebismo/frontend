@@ -10,7 +10,7 @@ class CommentsReplies extends React.Component {
     var viewer = this.props.viewer;
 
     return (
-      <div className="list-group-item">
+      <div>
         {parent.comments.edges.map(function(edge, i){
           var comment = edge.node;
           return (

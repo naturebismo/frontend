@@ -57,7 +57,7 @@ class CommentItem extends React.Component {
 
     var repliesCount;
     if(comment.numComments >= 1) {
-      repliesCount = (<Button bsStyle="info" className="list-group-item list-group-item-info" onClick={this.handleToggleReplies}>{comment.numComments} respostas</Button>);
+      repliesCount = (<Button bsStyle="info" className="list-group-item list-group-item-info comments-toggle-replies" onClick={this.handleToggleReplies}>{comment.numComments} respostas</Button>);
     }
 
     var replyForm;
@@ -68,14 +68,19 @@ class CommentItem extends React.Component {
     }
 
     return (
-      <Media className="list-group-item">
+      <Media className="list-group-item comments-item">
         <Media.Left>
-          <img width={64} height={64} src="/assets/thumbnail.png" alt="Image"/>
+          <img width={64} height={64} src="/assets/thumbnail.png" alt="Image" />
         </Media.Left>
         <Media.Body>
           <Media.Heading><a href="#">{ comment.revisionCreated.author.username }</a></Media.Heading>
           <p>{ comment.body }</p>
-          <LikeDislikeButtons /> <a href="#" onClick={this.handleToggleReplyForm}>responder</a>
+
+          <LikeDislikeButtons />
+
+          <button className="btn btn-link" onClick={this.handleToggleReplyForm}>
+            <i className="fa fa-reply" aria-hidden="true"></i> responder
+          </button>
           
           <div className="list-group">
             {replyForm}

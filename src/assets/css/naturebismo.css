@@ -1,0 +1,11 @@
+.comments-item {
+	margin-top: 0;
+}
+
+.comments-item .list-group {
+	margin-bottom: 0;
+}
+
+.comments-toggle-replies {
+	margin-top: 10px;
+}

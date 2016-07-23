@@ -2,6 +2,7 @@ import 'babel-polyfill';
 
 import "./assets/bootstrap-3.3.6/css/bootstrap.css";
 import "./assets/font-awesome-4.6.1/css/font-awesome.min.css";
+import "./assets/css/naturebismo.css";
 
 import React from 'react';
 import ReactDOM from 'react-dom';

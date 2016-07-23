@@ -69,7 +69,7 @@ class Post extends React.Component {
           <p><Link to={`/revisions/post/${post.id}`}>{post.document.revisionsCount} revisions</Link></p>
         </article>
 
-        <div className="list-group">
+        <div className="list-group comments-list">
           <CommentCreate viewer={this.props.viewer} parent={this.props.post} />
           <CommentsList viewer={this.props.viewer} parent={this.props.post} />
         </div>
