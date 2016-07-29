@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import {FormattedMessage} from 'react-intl';
 
-import LikeDislikeButtons from '../likes/buttons';
+import VotingButtons from '../voting/buttons';
 import CommentCreate from '../comments/add';
 import CommentsList from '../comments/list';
 import PostDelete from './PostDelete';
@@ -62,7 +62,7 @@ class Post extends React.Component {
             <Markdown options={markdownOptions} container="div">{post.body}</Markdown>
           </div>
 
-          <LikeDislikeButtons/>
+          <VotingButtons viewer={this.props.viewer} parent={this.props.post} votes={this.props.post.votes} />
 
           {postEditorActions}
 
@@ -104,6 +104,9 @@ export default Relay.createContainer(Post, {
           }
         }
         numComments,
+        votes {
+          ${VotingButtons.getFragment('votes')},
+        }
         ${PostDelete.getFragment('post')},
         ${CommentsList.getFragment('parent')},
       }
@@ -117,6 +120,7 @@ export default Relay.createContainer(Post, {
         ${CommentCreate.getFragment('viewer')},
         ${CommentsList.getFragment('viewer')},
         ${PostDelete.getFragment('viewer')},
+        ${VotingButtons.getFragment('viewer')},
       }
     `,
   },

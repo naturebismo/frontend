@@ -2,7 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import { Media, Button } from "react-bootstrap";
 
-import LikeDislikeButtons from '../likes/buttons';
+import VotingButtons from '../voting/buttons';
 import CommentCreate from '../comments/add';
 import CommentsReplies from './replies';
 
@@ -76,7 +76,7 @@ class CommentItem extends React.Component {
           <Media.Heading><a href="#">{ comment.revisionCreated.author.username }</a></Media.Heading>
           <p>{ comment.body }</p>
 
-          <LikeDislikeButtons />
+          <VotingButtons viewer={this.props.viewer} parent={this.props.comment} votes={this.props.comment.votes} />
 
           <button className="btn btn-link" onClick={this.handleToggleReplyForm}>
             <i className="fa fa-reply" aria-hidden="true"></i> responder
@@ -110,6 +110,9 @@ export default Relay.createContainer(CommentItem, {
           createdAt
         },
         ${CommentsReplies.getFragment('parent').if(variables.expanded)},
+        votes {
+          ${VotingButtons.getFragment('votes')},
+        }
       }
     `,
     viewer: (variables) => Relay.QL`
@@ -119,7 +122,8 @@ export default Relay.createContainer(CommentItem, {
           isAuthenticated
         },
         ${CommentsReplies.getFragment('viewer').if(variables.expanded)},
-        ${CommentCreate.getFragment('viewer')}
+        ${CommentCreate.getFragment('viewer')},
+        ${VotingButtons.getFragment('viewer')},
       }
     `,
   },
