@@ -2,6 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 
 import VoteSetMutation from './VoteSet.mutation';
+import VoteDeleteMutation from './VoteDelete.mutation';
 
 class VotingButtons extends React.Component {
   handleVoteSet = (e) => {
@@ -10,6 +11,16 @@ class VotingButtons extends React.Component {
     Relay.Store.commitUpdate(
       new VoteSetMutation({
           value: e.target.value,
+          parent: this.props.parent})
+    );
+  }
+
+  handleVoteDelete = (e) => {
+    e.preventDefault();
+
+    Relay.Store.commitUpdate(
+      new VoteDeleteMutation({
+          vote: this.props.votes.mine,
           parent: this.props.parent})
     );
   }
@@ -29,7 +40,7 @@ class VotingButtons extends React.Component {
       }
 
       button_delete = (
-        <button className='btn btn-danger' value="-1" onClick={this.handleVoteDelete}>
+        <button className='btn btn-danger tip' title="Remover" onClick={this.handleVoteDelete}>
           <i className="fa fa-close" aria-hidden="true"></i>
         </button>
       );
