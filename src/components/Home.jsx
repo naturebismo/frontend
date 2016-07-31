@@ -33,7 +33,7 @@ class Home extends React.Component {
           var tag = edge.node;
           return (<Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link>);
         })}<br/>
-        <a href="#">9 gostaram</a> . <a href="#">1 não gostou</a> . <a href="#">{ post.numComments } comentarios</a> . enviada por <a href="#">{ post.revisionCreated.author.username }</a> <PostDate date={post.publishedAt} />
+        <a href="#">9 gostaram</a> . <a href="#">1 não gostou</a> . <a href="#">{ post.comments.count } comentarios</a> . enviada por <a href="#">{ post.revisionCreated.author.username }</a> <PostDate date={post.publishedAt} />
       </div>
     );
   }
@@ -75,7 +75,9 @@ export default Relay.createContainer(Home, {
               url,
               title,
               publishedAt,
-              numComments,
+              comments {
+                count
+              }
               tags(first: 50) {
                 edges {
                   node {

@@ -56,6 +56,11 @@ class CommentCreate extends React.Component {
 
 export default Relay.createContainer(CommentCreate, {
   fragments: {
+    parent: () => Relay.QL`
+      fragment on Node {
+        id
+      }
+    `,
     viewer: () => Relay.QL`
       fragment on Query {
         ${CommentCreateMutation.getFragment('viewer')},

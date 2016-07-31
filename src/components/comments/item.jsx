@@ -3,7 +3,7 @@ import Relay from 'react-relay';
 import { Media, Button } from "react-bootstrap";
 
 import VotingButtons from '../voting/buttons';
-import CommentCreate from '../comments/add';
+import CommentCreate from './add';
 import CommentsReplies from './replies';
 
 
@@ -49,44 +49,36 @@ class CommentItem extends React.Component {
 
   render() {
     var comment = this.props.comment;
+    var viewer = this.props.viewer;
 
-    var replies;
-    if (this.props.relay.variables.expanded) {
-      replies = (<CommentsReplies viewer={this.props.viewer} parent={this.props.comment} />);
-    }
-
-    var repliesCount;
-    if(comment.numComments >= 1) {
-      repliesCount = (<Button bsStyle="info" className="list-group-item list-group-item-info comments-toggle-replies" onClick={this.handleToggleReplies}>{comment.numComments} respostas</Button>);
-    }
-
-    var replyForm;
-    if(this.state.replyFormExpanded) {
-      replyForm = (<CommentCreate viewer={this.props.viewer} parent={this.props.comment}
-        onShown={this.handleReplyFocus}
-        onSuccess={this.handleHideReplyForm} />);
+    var voting;
+    if(typeof this.props.comment.votes !== 'undefined') {
+      voting = ( <VotingButtons viewer={this.props.viewer} parent={this.props.comment} votes={this.props.comment.votes} />);
     }
 
     return (
       <Media className="list-group-item comments-item">
         <Media.Left>
-          <img width={64} height={64} src="/assets/thumbnail.png" alt="Image" />
+          <img width={64} height={64} src={require('../../assets/images/icon-user-default.png')} alt={comment.revisionCreated.author.username} />
         </Media.Left>
         <Media.Body>
           <Media.Heading><a href="#">{ comment.revisionCreated.author.username }</a></Media.Heading>
           <p>{ comment.body }</p>
 
-          <VotingButtons viewer={this.props.viewer} parent={this.props.comment} votes={this.props.comment.votes} />
+          {voting}
 
           <button className="btn btn-link" onClick={this.handleToggleReplyForm}>
             <i className="fa fa-reply" aria-hidden="true"></i> responder
           </button>
           
-          <div className="list-group">
-            {replyForm}
-            {repliesCount}
-            {replies}
-          </div>
+          <CommentsReplies
+            viewer={this.props.viewer}
+            comments={this.props.comment.comments}
+            parent={comment}
+            expanded={this.props.relay.variables.expanded} 
+            replyFormExpanded={this.state.replyFormExpanded} 
+            handleToggleReplies={this.handleToggleReplies}
+          />
         </Media.Body>
       </Media>
     );
@@ -102,17 +94,21 @@ export default Relay.createContainer(CommentItem, {
       fragment on Comment {
         id,
         body,
-        numComments,
         revisionCreated {
           author {
             username
           },
           createdAt
         },
-        ${CommentsReplies.getFragment('parent').if(variables.expanded)},
         votes {
           ${VotingButtons.getFragment('votes')},
         }
+        comments(first: 50) {
+          count
+          ${CommentsReplies.getFragment('comments').if(variables.expanded)},
+        },
+        ${CommentsReplies.getFragment('parent').if(variables.expanded)},
+        ${CommentCreate.getFragment('parent')},
       }
     `,
     viewer: (variables) => Relay.QL`
@@ -121,9 +117,9 @@ export default Relay.createContainer(CommentItem, {
         me {
           isAuthenticated
         },
-        ${CommentsReplies.getFragment('viewer').if(variables.expanded)},
         ${CommentCreate.getFragment('viewer')},
         ${VotingButtons.getFragment('viewer')},
+        ${CommentsReplies.getFragment('viewer').if(variables.expanded)},
       }
     `,
   },

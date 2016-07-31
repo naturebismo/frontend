@@ -7,7 +7,6 @@ import Helmet from 'react-helmet';
 import {FormattedMessage} from 'react-intl';
 
 import VotingButtons from '../voting/buttons';
-import CommentCreate from '../comments/add';
 import CommentsList from '../comments/list';
 import PostDelete from './PostDelete';
 
@@ -35,15 +34,15 @@ class Post extends React.Component {
     var postEditorActions = null;
     if(this.props.viewer.me !== null) { 
       if(this.props.viewer.me.isAuthenticated === true) {
-        var postEditorActions = (<p>
-            <Link to={`/blog/edit/${post.id}`}>
-              Editar
-            </Link> <PostDelete viewer={this.props.viewer} post={this.props.post} /> </p>);
+        var postEditorActions = (<span>
+            <Link to={`/blog/edit/${post.id}`}>editar</Link><span> . </span>
+            <PostDelete viewer={this.props.viewer} post={this.props.post} />
+          </span>);
       }
     }
 
     return (
-      <div>
+      <div className="post-component">
         <article role="article">
           <Helmet
             title={post.title}
@@ -55,7 +54,12 @@ class Post extends React.Component {
               var tag = edge.node;
               return (<Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link>);
             })}<br/>
-            <a href="#">9 gostaram</a> . <a href="#">1 não gostou</a> . <a href="#">{post.numComments} comentarios</a> . enviada por <a href="#">{ post.revisionCreated.author.username }</a> <i className="fa fa-clock-o" aria-hidden="true"></i> <PostDate date={post.publishedAt} />
+            <a href="#">9 gostaram</a> . <a href="#">1 não gostou</a><span> . </span>
+            <a href="#">{post.comments.count} comentarios</a><span> . </span>
+            enviada por <a href="#">{ post.revisionCreated.author.username }</a> <i className="fa fa-clock-o"
+              aria-hidden="true"></i> <PostDate date={post.publishedAt} /><span> . </span>
+            <Link to={`/revisions/post/${post.id}`}>{post.document.revisionsCount} alterações</Link><span> . </span>
+            {postEditorActions}
           </div>
           
           <div id="postBody">
@@ -63,16 +67,15 @@ class Post extends React.Component {
           </div>
 
           <VotingButtons viewer={this.props.viewer} parent={this.props.post} votes={this.props.post.votes} />
-
-          {postEditorActions}
-
-          <p><Link to={`/revisions/post/${post.id}`}>{post.document.revisionsCount} revisions</Link></p>
         </article>
 
-        <div className="list-group comments-list">
-          <CommentCreate viewer={this.props.viewer} parent={this.props.post} />
-          <CommentsList viewer={this.props.viewer} parent={this.props.post} />
-        </div>
+        <CommentsList
+          viewer={this.props.viewer}
+          comments={this.props.post.comments}
+          parent={this.props.post}
+          expanded={true}
+          replyFormExpanded={true}
+        />
       </div>
     );
   }
@@ -103,7 +106,10 @@ export default Relay.createContainer(Post, {
             username
           }
         }
-        numComments,
+        comments(first: 50) {
+          count,
+          ${CommentsList.getFragment('comments')},
+        },
         votes {
           ${VotingButtons.getFragment('votes')},
         }
@@ -117,7 +123,6 @@ export default Relay.createContainer(Post, {
         me {
           isAuthenticated
         },
-        ${CommentCreate.getFragment('viewer')},
         ${CommentsList.getFragment('viewer')},
         ${PostDelete.getFragment('viewer')},
         ${VotingButtons.getFragment('viewer')},

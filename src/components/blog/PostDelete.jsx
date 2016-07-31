@@ -20,7 +20,7 @@ class PostDelete extends React.Component {
   }
 
   render() {
-    return (<a href="#" onClick={this.handleClick}>Delete</a>);
+    return (<a href="#" onClick={this.handleClick}>excluir</a>);
   }
 }
 

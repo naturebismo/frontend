@@ -33,7 +33,9 @@ export default class CommentCreateMutation extends Relay.Mutation {
           node {
             id,
             body,
-            numComments,
+            comments {
+              count
+            },
             revisionCreated {
                 author {
                     username
@@ -72,19 +74,21 @@ export default class CommentCreateMutation extends Relay.Mutation {
       parent: this.props.parent.id,
     };
   }
-  getOptimisticResponse() {
-    return {
-      comment: {
-        node: {
-          body: this.props.body,
-          revisionCreated: {
-            author: {
-              username: this.props.viewer.me.username,
-            }
-          },
-          numComments: 0,
-        },
-      },
-    };
-  }
+  // getOptimisticResponse() {
+  //   return {
+  //     comment: {
+  //       node: {
+  //         body: this.props.body,
+  //         revisionCreated: {
+  //           author: {
+  //             username: this.props.viewer.me.username,
+  //           }
+  //         },
+  //         comments: {
+  //           'count': 0,
+  //         }
+  //       },
+  //     },
+  //   };
+  // }
 }

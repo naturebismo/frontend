@@ -6,6 +6,10 @@
 	margin-bottom: 0;
 }
 
-.comments-toggle-replies {
-	margin-top: 10px;
+.comments-item .list-group-item:first-child {
+    margin-top: 10px;
+}
+
+.post-component article {
+	margin-bottom: 20px;
 }
