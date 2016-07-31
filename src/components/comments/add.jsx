@@ -59,6 +59,7 @@ export default Relay.createContainer(CommentCreate, {
     parent: () => Relay.QL`
       fragment on Node {
         id
+        ${CommentCreateMutation.getFragment('parent')},
       }
     `,
     viewer: () => Relay.QL`

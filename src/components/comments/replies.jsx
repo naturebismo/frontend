@@ -63,6 +63,7 @@ export default Relay.createContainer(CommentsReplies, {
     parent: () => Relay.QL`
       fragment on Node {
         id
+         ${CommentCreate.getFragment('parent')},
       }
     `,
     comments: () => Relay.QL`

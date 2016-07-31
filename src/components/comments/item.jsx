@@ -105,9 +105,9 @@ export default Relay.createContainer(CommentItem, {
         }
         comments(first: 50) {
           count
-          ${CommentsReplies.getFragment('comments').if(variables.expanded)},
+          ${CommentsReplies.getFragment('comments', {expanded: false, replyFormExpanded: false}).if(variables.expanded)},
         },
-        ${CommentsReplies.getFragment('parent').if(variables.expanded)},
+        ${CommentsReplies.getFragment('parent', {expanded: false, replyFormExpanded: false}).if(variables.expanded)},
         ${CommentCreate.getFragment('parent')},
       }
     `,
@@ -119,7 +119,7 @@ export default Relay.createContainer(CommentItem, {
         },
         ${CommentCreate.getFragment('viewer')},
         ${VotingButtons.getFragment('viewer')},
-        ${CommentsReplies.getFragment('viewer').if(variables.expanded)},
+        ${CommentsReplies.getFragment('viewer', {expanded: false, replyFormExpanded: false}).if(variables.expanded)},
       }
     `,
   },

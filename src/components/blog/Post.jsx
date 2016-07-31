@@ -108,13 +108,13 @@ export default Relay.createContainer(Post, {
         }
         comments(first: 50) {
           count,
-          ${CommentsList.getFragment('comments')},
+          ${CommentsList.getFragment('comments', {replyFormExpanded: true, expanded: true})},
         },
         votes {
           ${VotingButtons.getFragment('votes')},
         }
         ${PostDelete.getFragment('post')},
-        ${CommentsList.getFragment('parent')},
+        ${CommentsList.getFragment('parent', {replyFormExpanded: true, expanded: true})},
       }
     `,
     viewer: () => Relay.QL`
@@ -123,7 +123,7 @@ export default Relay.createContainer(Post, {
         me {
           isAuthenticated
         },
-        ${CommentsList.getFragment('viewer')},
+        ${CommentsList.getFragment('viewer', {replyFormExpanded: true, expanded: true})},
         ${PostDelete.getFragment('viewer')},
         ${VotingButtons.getFragment('viewer')},
       }

@@ -2,6 +2,11 @@ import Relay from 'react-relay';
 
 export default class CommentCreateMutation extends Relay.Mutation {
   static fragments = {
+    parent: () => Relay.QL`
+      fragment on Node {
+        id
+      }
+    `,
     viewer: () => Relay.QL`
       fragment on Query {
         id,
