@@ -18,6 +18,8 @@ import PostRevisions from './components/blog/PostRevisions';
 import Tag from './components/tags/Tag';
 import {TagSlugQueries, TagIDQueries} from './components/tags/Tag.queries';
 import TagEdit from './components/tags/TagEdit';
+import Profile from './components/accounts/Profile';
+import ProfileQueries from './components/accounts/Profile.queries';
 
 import Logout from './components/accounts/Logout';
 
@@ -33,6 +35,8 @@ export default (
     queries={ViewerQueries}
   >
     <IndexRoute component={Home} queries={ViewerQueries} />
+    <Route
+      path="u/:username" component={Profile} queries={ProfileQueries} />
     <Route
       path="blog/new" component={PostCreate} queries={ViewerQueries} />
     <Route

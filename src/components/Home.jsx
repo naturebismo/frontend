@@ -9,6 +9,8 @@ import {
     FormattedRelative,
 } from 'react-intl';
 
+import ProfileLink from './accounts/ProfileLink';
+
 const pageSize = 30;
 
 const PostDate = injectIntl(({date, intl}) => (
@@ -33,7 +35,7 @@ class Home extends React.Component {
           var tag = edge.node;
           return (<Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link>);
         })}<br/>
-        <a href="#">9 gostaram</a> . <a href="#">1 não gostou</a> . <a href="#">{ post.comments.count } comentarios</a> . enviada por <a href="#">{ post.revisionCreated.author.username }</a> <PostDate date={post.publishedAt} />
+        <a href="#">{post.votes.countUps} gostaram</a> . <a href="#">{post.votes.countDowns} não gostaram</a> . <a href="#">{ post.comments.count } comentarios</a> . enviada por <ProfileLink user={post.revisionCreated.author} /> <PostDate date={post.publishedAt} />
       </div>
     );
   }
@@ -78,6 +80,10 @@ export default Relay.createContainer(Home, {
               comments {
                 count
               }
+              votes {
+                countUps
+                countDowns
+              }
               tags(first: 50) {
                 edges {
                   node {
@@ -88,7 +94,7 @@ export default Relay.createContainer(Home, {
               }
               revisionCreated {
                 author {
-                  username
+                  ${ProfileLink.getFragment('user')},
                 }
               }
             }
