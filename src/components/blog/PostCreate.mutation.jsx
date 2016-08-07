@@ -20,10 +20,6 @@ export default class PostCreateMutation extends Relay.Mutation {
         post,
         viewer {
           allPosts,
-        },
-        errors {
-          key,
-          message,
         }
       }
     `;

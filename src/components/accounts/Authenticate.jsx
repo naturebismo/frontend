@@ -2,9 +2,11 @@ import React from 'react';
 import Relay from 'react-relay';
 import AuthenticateMutation from './Authenticate.mutation';
 import { Form, FormGroup, FormControl, Col, ControlLabel, Button } from "react-bootstrap";
+import { Errors, FormGroupError, HelpBlockError } from '../forms/errors';
+
 
 class Authenticate extends React.Component {
-  state = {email: '', password: ''}
+  state = {email: '', password: '', errors: []}
 
   handleEmailChange = (e) => {
     this.setState({email: e.target.value});
@@ -23,8 +25,12 @@ class Authenticate extends React.Component {
           viewer: this.props.viewer}),
       {
         onSuccess: (response) => {
-          if(typeof this.props.callback === 'function'){
-            this.props.callback();
+          if(response.authenticate.errors.length > 0){
+            this.setState({errors: response.authenticate.errors});
+          } else {
+            if(typeof this.props.callback === 'function'){
+              this.props.callback();
+            }
           }
         },
       }
@@ -34,7 +40,9 @@ class Authenticate extends React.Component {
   render() {
     return (
       <Form onSubmit={this.handleSubmit} horizontal>
-        <FormGroup controlId="formHorizontalEmail">
+        <Errors errors={this.state.errors} />
+
+        <FormGroupError errors={this.state.errors} fieldname="username">
           <Col componentClass={ControlLabel} sm={2}>
             Email
           </Col>
@@ -43,10 +51,11 @@ class Authenticate extends React.Component {
                           placeholder="Email"
                           value={this.state.email}
                           onChange={this.handleEmailChange} />
+            <HelpBlockError errors={this.state.errors} fieldname="username" />
           </Col>
-        </FormGroup>
+        </FormGroupError>
 
-        <FormGroup controlId="formHorizontalPassword">
+        <FormGroupError errors={this.state.errors} fieldname="password">
           <Col componentClass={ControlLabel} sm={2}>
             Password
           </Col>
@@ -55,8 +64,9 @@ class Authenticate extends React.Component {
                           placeholder="Password"
                           value={this.state.password}
                           onChange={this.handlePasswordChange} />
+            <HelpBlockError errors={this.state.errors} fieldname="password" />
           </Col>
-        </FormGroup>
+        </FormGroupError>
 
         <FormGroup>
           <Col smOffset={2} sm={10}>

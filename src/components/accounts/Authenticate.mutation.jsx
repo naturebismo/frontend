@@ -29,12 +29,28 @@ export default class AuthenticateMutation extends Relay.Mutation {
   }
 
   getConfigs() {
-    return [{
-      type: 'FIELDS_CHANGE',
-      fieldIDs: {
-        viewer: this.props.viewer.id,
+    return [
+      {
+        type: 'FIELDS_CHANGE',
+        fieldIDs: {
+          viewer: this.props.viewer.id,
+        }
+      },
+      {
+        type: 'REQUIRED_CHILDREN',
+        children: [
+          Relay.QL`
+            fragment on AuthenticatePayload {
+              errors {
+                code,
+                location
+                message
+              }
+            }
+          `,
+        ]
       }
-    }];
+    ];
   }
 
   getVariables() {

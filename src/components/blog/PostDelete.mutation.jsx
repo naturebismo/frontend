@@ -26,10 +26,6 @@ export default class PostDeleteMutation extends Relay.Mutation {
         postDeletedID,
         viewer {
           allPosts,
-        },
-        errors {
-          key,
-          message,
         }
       }
     `;

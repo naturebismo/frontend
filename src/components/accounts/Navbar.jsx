@@ -43,7 +43,7 @@ class AccountNavbar extends React.Component {
     } else {
       var navBarUser = (
         <Navbar.Text className="navbar-text" pullRight>
-          Want to join? <a href="" onClick={this.openLoginModal}>Log in or sign up</a> in seconds.
+          Quer participar? <a href="" onClick={this.openLoginModal}>Entre ou registre-se</a> em segundos.
           <Modal show={this.state.showLoginModal} onHide={this.closeLoginModal}>
             <Modal.Header closeButton>
               <Modal.Title>Login</Modal.Title>

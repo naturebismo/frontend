@@ -22,10 +22,6 @@ export default class PostEditMutation extends Relay.Mutation {
         post,
         viewer {
           allPosts,
-        },
-        errors {
-          key,
-          message,
         }
       }
     `;

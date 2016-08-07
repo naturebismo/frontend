@@ -21,6 +21,8 @@ import TagEdit from './components/tags/TagEdit';
 import Profile from './components/accounts/Profile';
 import ProfileQueries from './components/accounts/Profile.queries';
 
+import Plant from './components/plants/Plant';
+
 import Logout from './components/accounts/Logout';
 
 function preparePostParams(params, route) {
@@ -37,6 +39,8 @@ export default (
     <IndexRoute component={Home} queries={ViewerQueries} />
     <Route
       path="u/:username" component={Profile} queries={ProfileQueries} />
+    <Route
+      path="plant" component={Plant} queries={ViewerQueries} />
     <Route
       path="blog/new" component={PostCreate} queries={ViewerQueries} />
     <Route

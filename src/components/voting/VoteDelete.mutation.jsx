@@ -19,10 +19,6 @@ export default class VoteDeleteMutation extends Relay.Mutation {
             votes
           }
         }
-        errors {
-          key,
-          message,
-        }
       }
     `;
   }

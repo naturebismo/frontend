@@ -66,6 +66,21 @@ class App extends React.Component {
               {React.cloneElement(this.props.children, {viewer: this.props.viewer})}
             </div>
           </div>
+
+          <footer className="row">
+            <br />
+            <br />
+            <div className="col-xs-6">
+              © 2016 Naturebismo versão <a href="#">a3f19e2</a>.
+            </div>
+            <div className="col-xs-6 text-right">
+              <a href="#">Sobre</a><span> . </span>
+              <a href="#">Contribua</a><span> . </span>
+              <a href="#">Termos de Uso</a>
+            </div>
+            <br />
+            <br />
+          </footer>
         </div>
       </div>
       </IntlProvider>

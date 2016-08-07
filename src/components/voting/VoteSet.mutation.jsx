@@ -21,10 +21,6 @@ export default class VoteSetMutation extends Relay.Mutation {
         vote {
           id
           value
-        },
-        errors {
-          key,
-          message,
         }
       }
     `;

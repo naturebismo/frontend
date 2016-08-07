@@ -47,10 +47,6 @@ export default class CommentCreateMutation extends Relay.Mutation {
                 }
             }
           }
-        },
-        errors {
-          key,
-          message,
         }
       }
     `;

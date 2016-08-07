@@ -23,10 +23,6 @@ export default class TagEditMutation extends Relay.Mutation {
         viewer {
           allTags,
         },
-        errors {
-          key,
-          message,
-        }
       }
     `;
   }
