@@ -2,8 +2,8 @@ import Relay from 'react-relay';
 
 export default class CommentCreateMutation extends Relay.Mutation {
   static fragments = {
-    parent: () => Relay.QL`
-      fragment on Node {
+    commenting: () => Relay.QL`
+      fragment on Commenting {
         id
       }
     `,
@@ -12,7 +12,6 @@ export default class CommentCreateMutation extends Relay.Mutation {
         id,
         me {
           username
-          isAuthenticated
         }
       }
     `,
@@ -23,22 +22,16 @@ export default class CommentCreateMutation extends Relay.Mutation {
   getFatQuery() {
     return Relay.QL`
       fragment on CommentCreatePayload {
-        parent {
-          ... on Post {
-            id,
-            comments
-          }
-
-          ... on Comment {
-            id,
-            comments
-          }
+        commenting {
+          id,
+          count,
+          comments
         }
         comment {
           node {
             id,
             body,
-            comments {
+            commenting {
               count
             },
             revisionCreated {
@@ -55,12 +48,12 @@ export default class CommentCreateMutation extends Relay.Mutation {
     return [
       {
         type: 'FIELDS_CHANGE',
-        fieldIDs: {parent: this.props.parent.id},
+        fieldIDs: {commenting: this.props.commenting.id},
       },
       {
         type: 'RANGE_ADD',
-        parentName: 'parent',
-        parentID: this.props.parent.id,
+        parentName: 'commenting',
+        parentID: this.props.commenting.id,
         connectionName: 'comments',
         edgeName: 'comment',
         rangeBehaviors: {
@@ -72,7 +65,7 @@ export default class CommentCreateMutation extends Relay.Mutation {
   getVariables() {
     return {
       body: this.props.body,
-      parent: this.props.parent.id,
+      parent: this.props.commenting.id,
     };
   }
   // getOptimisticResponse() {

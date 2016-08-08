@@ -73,8 +73,7 @@ class CommentItem extends React.Component {
           
           <CommentsReplies
             viewer={this.props.viewer}
-            comments={this.props.comment.comments}
-            parent={comment}
+            commenting={this.props.comment.commenting}
             expanded={this.props.relay.variables.expanded} 
             replyFormExpanded={this.state.replyFormExpanded} 
             handleToggleReplies={this.handleToggleReplies}
@@ -103,12 +102,11 @@ export default Relay.createContainer(CommentItem, {
         votes {
           ${VotingButtons.getFragment('votes')},
         }
-        comments(first: 50) {
+        commenting {
           count
-          ${CommentsReplies.getFragment('comments', {expanded: false, replyFormExpanded: false}).if(variables.expanded)},
+          ${CommentCreate.getFragment('commenting')},
+          ${CommentsReplies.getFragment('commenting').if(variables.expanded)},
         },
-        ${CommentsReplies.getFragment('parent', {expanded: false, replyFormExpanded: false}).if(variables.expanded)},
-        ${CommentCreate.getFragment('parent')},
       }
     `,
     viewer: (variables) => Relay.QL`
@@ -119,7 +117,7 @@ export default Relay.createContainer(CommentItem, {
         },
         ${CommentCreate.getFragment('viewer')},
         ${VotingButtons.getFragment('viewer')},
-        ${CommentsReplies.getFragment('viewer', {expanded: false, replyFormExpanded: false}).if(variables.expanded)},
+        ${CommentsReplies.getFragment('viewer').if(variables.expanded)},
       }
     `,
   },

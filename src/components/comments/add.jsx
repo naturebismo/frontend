@@ -17,7 +17,7 @@ class CommentCreate extends React.Component {
     Relay.Store.commitUpdate(
       new CommentCreateMutation({
           body: this.state.body,
-          parent: this.props.parent,
+          commenting: this.props.commenting,
           viewer: this.props.viewer}),
       {
         onSuccess: (response) => {
@@ -56,10 +56,10 @@ class CommentCreate extends React.Component {
 
 export default Relay.createContainer(CommentCreate, {
   fragments: {
-    parent: () => Relay.QL`
-      fragment on Node {
+    commenting: () => Relay.QL`
+      fragment on Commenting {
         id
-        ${CommentCreateMutation.getFragment('parent')},
+        ${CommentCreateMutation.getFragment('commenting')},
       }
     `,
     viewer: () => Relay.QL`

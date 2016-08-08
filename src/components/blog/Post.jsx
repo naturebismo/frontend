@@ -55,7 +55,7 @@ class Post extends React.Component {
               return (<Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link>);
             })}<br/>
             <a href="#">9 gostaram</a> . <a href="#">1 não gostou</a><span> . </span>
-            <a href="#">{post.comments.count} comentarios</a><span> . </span>
+            <a href="#">{post.commenting.count} comentarios</a><span> . </span>
             enviada por <a href="#">{ post.revisionCreated.author.username }</a> <i className="fa fa-clock-o"
               aria-hidden="true"></i> <PostDate date={post.publishedAt} /><span> . </span>
             <Link to={`/revisions/post/${post.id}`}>{post.document.revisionsCount} alterações</Link><span> . </span>
@@ -71,7 +71,7 @@ class Post extends React.Component {
 
         <CommentsList
           viewer={this.props.viewer}
-          comments={this.props.post.comments}
+          commenting={this.props.post.commenting}
           parent={this.props.post}
           expanded={true}
           replyFormExpanded={true}
@@ -106,15 +106,14 @@ export default Relay.createContainer(Post, {
             username
           }
         }
-        comments(first: 50) {
+        commenting {
           count,
-          ${CommentsList.getFragment('comments', {replyFormExpanded: true, expanded: true})},
+          ${CommentsList.getFragment('commenting', {replyFormExpanded: true, expanded: true})},
         },
         votes {
           ${VotingButtons.getFragment('votes')},
         }
         ${PostDelete.getFragment('post')},
-        ${CommentsList.getFragment('parent', {replyFormExpanded: true, expanded: true})},
       }
     `,
     viewer: () => Relay.QL`

@@ -15,15 +15,16 @@ class CommentsReplies extends React.Component {
   }
 
   render() {
-    var comments = this.props.comments;
+    var commenting = this.props.commenting;
+    var comments = commenting.comments;
     var viewer = this.props.viewer;
 
     var repliesCount;
-    if(comments.count >= 1) {
+    if(commenting.count >= 1) {
       if(typeof this.props.handleToggleReplies === 'function'){
-        repliesCount = (<button className="list-group-item list-group-item-info comments-toggle-replies" onClick={this.props.handleToggleReplies}>{comments.count} respostas</button>);
+        repliesCount = (<button className="list-group-item list-group-item-info comments-toggle-replies" onClick={this.props.handleToggleReplies}>{commenting.count} respostas</button>);
       } else {
-        repliesCount = (<div className="list-group-item list-group-item-info comments-toggle-replies">{comments.count} respostas</div>);
+        repliesCount = (<div className="list-group-item list-group-item-info comments-toggle-replies">{commenting.count} respostas</div>);
       }
     }
 
@@ -39,7 +40,7 @@ class CommentsReplies extends React.Component {
 
     var replyForm;
     if(this.props.relay.variables.replyFormExpanded) {
-      replyForm = (<CommentCreate viewer={this.props.viewer} parent={this.props.parent}
+      replyForm = (<CommentCreate viewer={this.props.viewer} commenting={this.props.commenting}
         onShown={this.props.handleReplyFocus}
         onSuccess={this.handleHideReplyForm} />);
     }
@@ -60,24 +61,21 @@ export default Relay.createContainer(CommentsReplies, {
     expanded: false
   },
   fragments: {
-    parent: () => Relay.QL`
-      fragment on Node {
-        id
-         ${CommentCreate.getFragment('parent')},
-      }
-    `,
-    comments: () => Relay.QL`
-      fragment on CommentConnection {
+    commenting: (variables) => Relay.QL`
+      fragment on Commenting {
         count,
-        edges {
-          node {
-            id,
-            ${CommentItem.getFragment('comment')},
+        comments(first: 50) {
+          edges {
+            node {
+              id,
+              ${CommentItem.getFragment('comment')},
+            }
           }
         }
+        ${CommentCreate.getFragment('commenting')},
       }
     `,
-    viewer: () => Relay.QL`
+    viewer: (variables) => Relay.QL`
       fragment on Query {
         id,
         me {
