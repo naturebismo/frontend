@@ -55,7 +55,7 @@ class ProfileChangePassword extends React.Component {
 
         <FormGroupError errors={this.state.errors} fieldname="old_password">
           <Col componentClass={ControlLabel} sm={2}>
-            Senha Antiga
+            Senha antiga
           </Col>
           <Col sm={10}>
             <FormControl type="password"
@@ -68,7 +68,7 @@ class ProfileChangePassword extends React.Component {
 
         <FormGroupError errors={this.state.errors} fieldname="new_password1">
           <Col componentClass={ControlLabel} sm={2}>
-            Nova Senha
+            Nova senha
           </Col>
           <Col sm={10}>
             <FormControl type="password"
@@ -81,7 +81,7 @@ class ProfileChangePassword extends React.Component {
 
         <FormGroupError errors={this.state.errors} fieldname="new_password2">
           <Col componentClass={ControlLabel} sm={2}>
-            Nova Senha
+            Repetir nova senha
           </Col>
           <Col sm={10}>
             <FormControl type="password"
@@ -95,7 +95,7 @@ class ProfileChangePassword extends React.Component {
         <FormGroup>
           <Col smOffset={2} sm={10}>
             <Button type="submit" bsStyle="primary">
-              Alterar
+              Alterar senha
             </Button>
           </Col>
         </FormGroup>
