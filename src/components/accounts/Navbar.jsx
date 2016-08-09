@@ -46,11 +46,11 @@ class AccountNavbar extends React.Component {
           Quer participar? <a href="" onClick={this.openLoginModal}>Entre ou registre-se</a> em segundos.
           <Modal show={this.state.showLoginModal} onHide={this.closeLoginModal}>
             <Modal.Header closeButton>
-              <Modal.Title>Login</Modal.Title>
+              <Modal.Title>Entrar</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Authenticate viewer={this.props.viewer} callback={this.closeLoginModal} />
-              <legend>Create an account</legend>
+              <legend>Criar uma conta</legend>
               <Register viewer={this.props.viewer} callback={this.closeLoginModal} />
             </Modal.Body>
           </Modal>

@@ -4,39 +4,62 @@ export default class RegisterMutation extends Relay.Mutation {
   static fragments = {
     viewer: () => Relay.QL`
       fragment on Query {
-        me {
-          id,
-          username
-        }
+        id
       }
     `,
   };
+
   getMutation() {
-    return Relay.QL`mutation{register}`;
+    return Relay.QL`mutation{registerAndAuthenticate}`;
   }
+
   getFatQuery() {
     return Relay.QL`
-      fragment on RegisterPayload {
-        user {
+      fragment on RegisterAndAuthenticatePayload {
+        viewer {
           id,
-          username,
+          me {
+            id,
+            username,
+            isAuthenticated
+          }
         }
       }
     `;
   }
+
   getConfigs() {
-    return [{
-      type: 'FIELDS_CHANGE',
-      fieldIDs: {
-        user: this.props.user.id,
+    return [
+      {
+        type: 'FIELDS_CHANGE',
+        fieldIDs: {
+          viewer: this.props.viewer.id,
+        }
+      },
+      {
+        type: 'REQUIRED_CHILDREN',
+        children: [
+          Relay.QL`
+            fragment on RegisterAndAuthenticatePayload {
+              errors {
+                code,
+                location
+                message
+              }
+            }
+          `,
+        ]
       }
-    }];
+    ];
   }
+  
   getVariables() {
     return {
-      username: this.props.name,
+      firstName: this.props.first_name,
+      username: this.props.username,
       email: this.props.email,
-      password: this.props.password,
+      password1: this.props.password1,
+      password2: this.props.password2,
     };
   }
 }
