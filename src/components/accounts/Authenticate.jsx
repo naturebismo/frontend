@@ -44,11 +44,11 @@ class Authenticate extends React.Component {
 
         <FormGroupError errors={this.state.errors} fieldname="username">
           <Col componentClass={ControlLabel} sm={2}>
-            Email
+            E-mail
           </Col>
           <Col sm={10}>
             <FormControl type="text"
-                          placeholder="Email"
+                          placeholder="E-mail"
                           value={this.state.email}
                           onChange={this.handleEmailChange} />
             <HelpBlockError errors={this.state.errors} fieldname="username" />
@@ -57,11 +57,11 @@ class Authenticate extends React.Component {
 
         <FormGroupError errors={this.state.errors} fieldname="password">
           <Col componentClass={ControlLabel} sm={2}>
-            Password
+            Senha
           </Col>
           <Col sm={10}>
             <FormControl type="password"
-                          placeholder="Password"
+                          placeholder="Senha"
                           value={this.state.password}
                           onChange={this.handlePasswordChange} />
             <HelpBlockError errors={this.state.errors} fieldname="password" />

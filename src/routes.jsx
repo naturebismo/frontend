@@ -20,6 +20,7 @@ import {TagSlugQueries, TagIDQueries} from './components/tags/Tag.queries';
 import TagEdit from './components/tags/TagEdit';
 import Profile from './components/accounts/Profile';
 import ProfileQueries from './components/accounts/Profile.queries';
+import ProfileEdit from './components/accounts/ProfileEdit';
 
 import Plant from './components/plants/Plant';
 
@@ -39,6 +40,8 @@ export default (
     <IndexRoute component={Home} queries={ViewerQueries} />
     <Route
       path="u/:username" component={Profile} queries={ProfileQueries} />
+    <Route
+      path="me/edit" component={ProfileEdit} queries={ViewerQueries} />
     <Route
       path="plant" component={Plant} queries={ViewerQueries} />
     <Route
