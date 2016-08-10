@@ -36,7 +36,12 @@ class ProfileChangeAvatar extends React.Component {
 
     var avatar;
     if(user.avatar) {
-      avatar = (<img src={user.avatar} width="60" />);
+      avatar = (<div className="row">
+          <Col sm={2}></Col>
+          <Col sm={10}>
+            <p><img src={user.avatar.x140x140} width="140" className="img-thumbnail" /></p>
+          </Col>
+        </div>);
     }
 
     return (
@@ -44,14 +49,11 @@ class ProfileChangeAvatar extends React.Component {
         <Errors errors={this.state.errors} />
         {success}
 
-        <Col sm={2}></Col>
-        <Col sm={10}>
-          {avatar}
-        </Col>
+        {avatar}
 
         <FormGroupError errors={this.state.errors} fieldname="avatar">
           <Col componentClass={ControlLabel} sm={2}>
-            Avatar
+            Imagem de exibição
           </Col>
           <Col sm={10}>
             <input type="file" ref="fileInput" className="form-control" />
@@ -62,7 +64,7 @@ class ProfileChangeAvatar extends React.Component {
         <FormGroup>
           <Col smOffset={2} sm={10}>
             <Button type="submit" bsStyle="primary">
-              Alterar foto
+              Alterar imagem
             </Button>
           </Col>
         </FormGroup>
@@ -77,7 +79,9 @@ export default Relay.createContainer(ProfileChangeAvatar, {
       fragment on Query {
         id
         me {
-          avatar
+          avatar {
+            x140x140
+          }
         }
         ${ProfileChangeAvatarMutation.getFragment('viewer')},
       }

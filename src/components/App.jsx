@@ -49,15 +49,13 @@ class App extends React.Component {
           titleTemplate="%s | Naturebismo"
         />
         <Navbar staticTop>
-          <div className="container">
-            <Navbar.Header>
-              <Navbar.Brand>
-                <Link to={`/`} className="navbar-brand" style={{paddingLeft: 0}}>Naturebismo</Link>
-              </Navbar.Brand>
-            </Navbar.Header>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to={`/`} className="navbar-brand">Naturebismo</Link>
+            </Navbar.Brand>
+          </Navbar.Header>
 
-            <AccountNavbar viewer={this.props.viewer} />
-          </div>
+          <AccountNavbar viewer={this.props.viewer} />
         </Navbar>
 
         <div className="container">

@@ -35,7 +35,7 @@ class AccountNavbar extends React.Component {
           <NavDropdown title={this.props.viewer.me.username} id="header-nav-dropdown">
             <LinkContainer to={`/u/${this.props.viewer.me.username}`}><MenuItem>Meu perfil</MenuItem></LinkContainer>
             <LinkContainer to={`/blog/new`}><MenuItem>Escrever</MenuItem></LinkContainer>
-            <LinkContainer to={`/me/edit`}><MenuItem>Editar</MenuItem></LinkContainer>
+            <LinkContainer to={`/me/edit`}><MenuItem>Editar perfil</MenuItem></LinkContainer>
             <MenuItem divider />
             <MenuItem onClick={this.handleLogout}>Sair</MenuItem>
           </NavDropdown>

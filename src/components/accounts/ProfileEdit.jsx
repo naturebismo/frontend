@@ -67,11 +67,11 @@ class ProfileEdit extends React.Component {
     return (
       <div className="profile-component">
         <Helmet
-          title={user.username}
+          title="Editar perfil"
         />
 
         <div className="page-header" style={{marginTop: 0}}>
-            <h1 style={{marginTop: 0}}>{user.username}</h1>
+            <h1 style={{marginTop: 0}}>Editar perfil</h1>
         </div>
 
         <ProfileChangeAvatar viewer={this.props.viewer} />
