@@ -16,6 +16,12 @@ app.use('/graphql', proxy('localhost:9090', {
   }
 }));
 
+app.use('/public', proxy('localhost:9090', {
+  forwardPath: function(req, res) {
+    return '/public';
+  }
+}));
+
 app.get('*', (req, res, next) => {
     var urlpath = parseUrl(req).pathname
     var filename = urlpath.substr(1);

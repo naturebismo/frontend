@@ -5,6 +5,7 @@ import Markdown from 'react-remarkable';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import ProfileEditMutation from './ProfileEdit.mutation';
+import ProfileChangeAvatar from './ProfileChangeAvatar';
 import ProfileChangePassword from './ProfileChangePassword';
 import { Form, FormGroup, FormControl, Col, ControlLabel, Button, Alert } from "react-bootstrap";
 import { Errors, FormGroupError, HelpBlockError } from '../forms/errors';
@@ -72,6 +73,8 @@ class ProfileEdit extends React.Component {
         <div className="page-header" style={{marginTop: 0}}>
             <h1 style={{marginTop: 0}}>{user.username}</h1>
         </div>
+
+        <ProfileChangeAvatar viewer={this.props.viewer} />
 
         <Form onSubmit={this.handleSubmit} horizontal>
           <Errors errors={this.state.errors} />
@@ -144,6 +147,7 @@ export default Relay.createContainer(ProfileEdit, {
           isAuthenticated
         },
         ${ProfileEditMutation.getFragment('viewer')},
+        ${ProfileChangeAvatar.getFragment('viewer')},
         ${ProfileChangePassword.getFragment('viewer')},
       }
     `,

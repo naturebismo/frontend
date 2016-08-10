@@ -68,7 +68,10 @@ if(TARGET === 'start' || !TARGET) {
       host: process.env.HOST,
       port: process.env.PORT,
 
-      proxy: {'/graphql': `http://localhost:${GRAPHQL_PORT}`},
+      proxy: {
+        '/graphql': `http://localhost:${GRAPHQL_PORT}`,
+        '/public/*': `http://localhost:${GRAPHQL_PORT}`,
+      },
       stats: {colors: true},
     },
     module: {
