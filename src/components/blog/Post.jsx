@@ -66,13 +66,12 @@ class Post extends React.Component {
             <Markdown options={markdownOptions} container="div">{post.body}</Markdown>
           </div>
 
-          <VotingButtons viewer={this.props.viewer} parent={this.props.post} votes={this.props.post.votes} />
+          <VotingButtons viewer={this.props.viewer} voting={this.props.post.voting} />
         </article>
 
         <CommentsList
           viewer={this.props.viewer}
           commenting={this.props.post.commenting}
-          parent={this.props.post}
           expanded={true}
           replyFormExpanded={true}
         />
@@ -110,8 +109,8 @@ export default Relay.createContainer(Post, {
           count,
           ${CommentsList.getFragment('commenting', {replyFormExpanded: true, expanded: true})},
         },
-        votes {
-          ${VotingButtons.getFragment('votes')},
+        voting {
+          ${VotingButtons.getFragment('voting')},
         }
         ${PostDelete.getFragment('post')},
       }

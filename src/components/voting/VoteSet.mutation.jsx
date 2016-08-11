@@ -1,22 +1,28 @@
 import Relay from 'react-relay';
 
 export default class VoteSetMutation extends Relay.Mutation {
+  static fragments = {
+    voting: () => Relay.QL`
+      fragment on Voting {
+        id
+      }
+    `,
+  };
   getMutation() {
     return Relay.QL`mutation{voteSet}`;
   }
   getFatQuery() {
     return Relay.QL`
       fragment on VoteSetPayload {
-        parent {
-          ... on Post {
+        voting {
+          id,
+          count,
+          sumValues,
+          mine {
             id,
-            votes
-          }
-
-          ... on Comment {
-            id,
-            votes
-          }
+            value
+          },
+          votes
         }
         vote {
           id
@@ -29,18 +35,24 @@ export default class VoteSetMutation extends Relay.Mutation {
     return [
       {
         type: 'FIELDS_CHANGE',
-        fieldIDs: {parent: this.props.parent.id},
+        fieldIDs: {voting: this.props.voting.id},
       },
-      // {
-      //   type: 'FIELDS_CHANGE',
-      //   fieldIDs: {vote: this.props.vote.id},
-      // }
+      {
+        type: 'RANGE_ADD',
+        parentName: 'voting',
+        parentID: this.props.voting.id,
+        connectionName: 'votes',
+        edgeName: 'vote',
+        rangeBehaviors: {
+          '': 'prepend',
+        },
+      }
     ];
   }
   getVariables() {
     return {
       value: this.props.value,
-      parent: this.props.parent.id,
+      parent: this.props.voting.id,
     };
   }
   getOptimisticResponse() {

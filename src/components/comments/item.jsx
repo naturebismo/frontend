@@ -52,8 +52,8 @@ class CommentItem extends React.Component {
     var viewer = this.props.viewer;
 
     var voting;
-    if(typeof this.props.comment.votes !== 'undefined') {
-      voting = ( <VotingButtons viewer={this.props.viewer} parent={this.props.comment} votes={this.props.comment.votes} />);
+    if(typeof this.props.comment.voting !== 'undefined') {
+      voting = ( <VotingButtons viewer={this.props.viewer} voting={this.props.comment.voting} />);
     }
 
     return (
@@ -99,8 +99,8 @@ export default Relay.createContainer(CommentItem, {
           },
           createdAt
         },
-        votes {
-          ${VotingButtons.getFragment('votes')},
+        voting {
+          ${VotingButtons.getFragment('voting')},
         }
         commenting {
           count

@@ -6,13 +6,15 @@ import VoteSetMutation from './VoteSet.mutation';
 import VoteDeleteMutation from './VoteDelete.mutation';
 
 class VotingButtons extends React.Component {
+  state = {}
+
   handleVoteSet = (e) => {
     e.preventDefault();
 
     this.refs.loginRequired.refs.component.commitUpdate(
       new VoteSetMutation({
           value: e.target.value,
-          parent: this.props.parent})
+          voting: this.props.voting})
     );
   }
 
@@ -21,8 +23,8 @@ class VotingButtons extends React.Component {
 
     this.refs.loginRequired.refs.component.commitUpdate(
       new VoteDeleteMutation({
-          vote: this.props.votes.mine,
-          parent: this.props.parent})
+          vote: this.props.voting.mine,
+          voting: this.props.voting})
     );
   }
 
@@ -31,12 +33,12 @@ class VotingButtons extends React.Component {
     var vote_down_class = 'btn btn-default';
     var button_delete;
 
-    if(this.props.votes.mine) {
-      if(this.props.votes.mine.value == 1) {
+    if(this.props.voting.mine) {
+      if(this.props.voting.mine.value == 1) {
         vote_up_class += ' active';
       }
 
-      if(this.props.votes.mine.value == -1) {
+      if(this.props.voting.mine.value == -1) {
         vote_down_class += ' active';
       }
 
@@ -50,7 +52,7 @@ class VotingButtons extends React.Component {
     return (
       <span className="voting-buttons" role="toolbar" aria-label="...">
         <span  className="btn-group" role="groutp" aria-label="...">
-          <span className="btn btn-default">{this.props.votes.sumValues} - {this.props.votes.count}</span>
+          <span className="btn btn-default">{this.props.voting.sumValues} - {this.props.voting.count}</span>
           <button className={vote_up_class} value="1" onClick={this.handleVoteSet}>
             <i className="fa fa-thumbs-up" aria-hidden="true"></i> gostei
           </button>
@@ -68,14 +70,17 @@ class VotingButtons extends React.Component {
 
 export default Relay.createContainer(VotingButtons, {
   fragments: {
-    votes: () => Relay.QL`
-      fragment on VoteConnection {
+    voting: () => Relay.QL`
+      fragment on Voting {
+        id,
         sumValues,
         count,
         mine {
           id
           value
-        }
+        },
+        ${VoteSetMutation.getFragment('voting')},
+        ${VoteDeleteMutation.getFragment('voting')},
       }
     `,
     viewer: () => Relay.QL`
@@ -85,6 +90,7 @@ export default Relay.createContainer(VotingButtons, {
           isAuthenticated
         },
         ${LoginRequired.getFragment('viewer')},
+        
       }
     `,
   },

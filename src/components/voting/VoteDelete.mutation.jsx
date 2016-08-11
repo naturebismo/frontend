@@ -1,6 +1,13 @@
 import Relay from 'react-relay';
 
 export default class VoteDeleteMutation extends Relay.Mutation {
+  static fragments = {
+    voting: () => Relay.QL`
+      fragment on Voting {
+        id
+      }
+    `,
+  };
   getMutation() {
     return Relay.QL`mutation{voteDelete}`;
   }
@@ -8,16 +15,15 @@ export default class VoteDeleteMutation extends Relay.Mutation {
     return Relay.QL`
       fragment on VoteDeletePayload {
         voteDeletedID,
-        parent {
-          ... on Post {
+        voting {
+          id,
+          count,
+          sumValues,
+          mine {
             id
-            votes
-          }
-
-          ... on Comment {
-            id
-            votes
-          }
+            value
+          },
+          votes
         }
       }
     `;
@@ -25,18 +31,16 @@ export default class VoteDeleteMutation extends Relay.Mutation {
   getConfigs() {
     return [
         {
-          type: 'NODE_DELETE',
-          parentName: 'parent',
-          parentID: this.props.parent.id,
-          connectionName: 'votes',
-          deletedIDFieldName: 'voteDeletedID',
-        },
-        {
-          type: 'FIELDS_CHANGE',
-          fieldIDs: {
-            parent: this.props.parent.id,
-          },
-        }
+        type: 'FIELDS_CHANGE',
+        fieldIDs: {voting: this.props.voting.id},
+      },
+      {
+        type: 'NODE_DELETE',
+        parentName: 'voting',
+        parentID: this.props.voting.id,
+        connectionName: 'votes',
+        deletedIDFieldName: 'voteDeletedID',
+      }
     ];
   }
   getVariables() {
