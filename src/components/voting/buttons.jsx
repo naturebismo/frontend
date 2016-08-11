@@ -1,6 +1,7 @@
 import React from 'react';
 import Relay from 'react-relay';
 
+import LoginRequired from '../accounts/LoginRequired';
 import VoteSetMutation from './VoteSet.mutation';
 import VoteDeleteMutation from './VoteDelete.mutation';
 
@@ -8,7 +9,7 @@ class VotingButtons extends React.Component {
   handleVoteSet = (e) => {
     e.preventDefault();
 
-    Relay.Store.commitUpdate(
+    this.refs.loginRequired.refs.component.commitUpdate(
       new VoteSetMutation({
           value: e.target.value,
           parent: this.props.parent})
@@ -18,7 +19,7 @@ class VotingButtons extends React.Component {
   handleVoteDelete = (e) => {
     e.preventDefault();
 
-    Relay.Store.commitUpdate(
+    this.refs.loginRequired.refs.component.commitUpdate(
       new VoteDeleteMutation({
           vote: this.props.votes.mine,
           parent: this.props.parent})
@@ -58,6 +59,8 @@ class VotingButtons extends React.Component {
           </button>
           {button_delete}
         </span>
+
+        <LoginRequired viewer={this.props.viewer} ref="loginRequired" showMessage={true} />
       </span>
     );
   }
@@ -80,7 +83,8 @@ export default Relay.createContainer(VotingButtons, {
         id,
         me {
           isAuthenticated
-        }
+        },
+        ${LoginRequired.getFragment('viewer')},
       }
     `,
   },

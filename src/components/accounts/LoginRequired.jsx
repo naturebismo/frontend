@@ -37,8 +37,6 @@ class LoginRequired extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('changed');
-    
     if(typeof nextProps.showMessage !== 'undefined') {
       this.setState({showMessage: this.props.showMessage});
     }
