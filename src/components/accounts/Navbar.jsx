@@ -3,21 +3,15 @@ import Relay from 'react-relay';
 import { Nav, Navbar, NavDropdown, MenuItem, Modal } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-import Register from './Register';
-import Authenticate from './Authenticate';
+import LoginRequired from './LoginRequired';
 import DeauthenticateMutation from './Deauthenticate.mutation';
 
 
 class AccountNavbar extends React.Component {
-  state = {showLoginModal: false}
+  state = {}
 
   openLoginModal = (e) => {
-    e.preventDefault();
-    this.setState({showLoginModal: true});
-  }
-
-  closeLoginModal = () => {
-    this.setState({showLoginModal: false});
+    this.refs.loginRequired.refs.component.openLoginModal(e);
   }
 
   handleLogout = (e) => {
@@ -45,16 +39,7 @@ class AccountNavbar extends React.Component {
       var navBarUser = (
         <Navbar.Text className="navbar-text" pullRight>
           Quer participar? <a href="" onClick={this.openLoginModal}>Entre ou registre-se</a> em segundos.
-          <Modal show={this.state.showLoginModal} onHide={this.closeLoginModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>Entrar</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Authenticate viewer={this.props.viewer} callback={this.closeLoginModal} />
-              <legend>Criar uma conta</legend>
-              <Register viewer={this.props.viewer} callback={this.closeLoginModal} />
-            </Modal.Body>
-          </Modal>
+          <LoginRequired viewer={this.props.viewer} ref="loginRequired" />
         </Navbar.Text>
       );
     }
@@ -73,8 +58,7 @@ export default Relay.createContainer(AccountNavbar, {
           username,
           isAuthenticated
         },
-        ${Register.getFragment('viewer')},
-        ${Authenticate.getFragment('viewer')},
+        ${LoginRequired.getFragment('viewer')},
         ${DeauthenticateMutation.getFragment('viewer')},
       }
     `,

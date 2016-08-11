@@ -68,21 +68,21 @@ export default class CommentCreateMutation extends Relay.Mutation {
       parent: this.props.commenting.id,
     };
   }
-  // getOptimisticResponse() {
-  //   return {
-  //     comment: {
-  //       node: {
-  //         body: this.props.body,
-  //         revisionCreated: {
-  //           author: {
-  //             username: this.props.viewer.me.username,
-  //           }
-  //         },
-  //         comments: {
-  //           'count': 0,
-  //         }
-  //       },
-  //     },
-  //   };
-  // }
+  getOptimisticResponse() {
+    return {
+      comment: {
+        node: {
+          body: this.props.body,
+          revisionCreated: {
+            author: {
+              username: this.props.viewer.me.username,
+            }
+          },
+          commenting: {
+            'count': 0,
+          }
+        },
+      },
+    };
+  }
 }
