@@ -5,6 +5,7 @@ import Markdown from 'react-remarkable';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import {FormattedMessage} from 'react-intl';
+import { Col } from "react-bootstrap";
 
 import {
     injectIntl,
@@ -27,9 +28,22 @@ class Profile extends React.Component {
           title={user.username}
         />
 
-        <div className="page-header" style={{marginTop: 0}}>
-            <h1 style={{marginTop: 0}}>{user.username}</h1>
-        </div>
+        <Col sm={2}>
+          <img src={user.avatar.x140x140} width="160" className="img-thumbnail" />
+        </Col>
+        <Col sm={10}>
+          <div className="page-header" style={{marginTop: 0}}>
+              <h1 style={{marginTop: 0}}>{user.username}</h1>
+          </div>
+
+          <h2>Últimas atividades</h2>
+          {user.actions.edges.map(function(edge, i){
+            var action = edge.node;
+            return (<div>
+              {action.type} -> {action.object.__typename}:{action.object.id} | <ProfileDate date={action.createdAt} />
+            </div>);
+          })}
+        </Col>
       </div>
     );
   }
@@ -41,15 +55,36 @@ export default Relay.createContainer(Profile, {
       fragment on User {
         id,
         username
+        firstName
+        avatar {
+          x140x140
+        }
+        actions(first: 10) {
+          edges {
+            node {
+              id
+              type
+              createdAt
+              object {
+                id
+                __typename
+                
+                ... on Vote {
+                  value
+                }
+                
+                ... on Comment {
+                  body
+                }
+              }
+            }
+          }
+        }
       }
     `,
     viewer: () => Relay.QL`
       fragment on Query {
-        id,
-        me {
-          username
-          isAuthenticated
-        },
+        id
       }
     `,
   },
