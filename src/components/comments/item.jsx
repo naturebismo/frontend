@@ -1,14 +1,26 @@
 import React from 'react';
 import Relay from 'react-relay';
 import { Media, Button } from "react-bootstrap";
+import Markdown from 'react-remarkable';
 
 import VotingButtons from '../voting/buttons';
 import CommentCreate from './add';
+import CommentEdit from './edit';
 import CommentsReplies from './replies';
+
+import {markdownOptions} from "../blog/Post";
 
 
 class CommentItem extends React.Component {
-  state = {replyFormExpanded: false}
+  state = {replyFormExpanded: false, editing: false}
+
+  handleShowEditForm = (e) => {
+    this.setState({editing: true});
+  }
+
+  handleHideEditForm = (e) => {
+    this.setState({editing: false});
+  }
 
   handleShowReplies = (e) => {
     e.preventDefault();
@@ -56,6 +68,17 @@ class CommentItem extends React.Component {
       voting = ( <VotingButtons viewer={this.props.viewer} voting={this.props.comment.voting} />);
     }
 
+    var commentBody;
+    if(this.state.editing) {
+      commentBody = (<CommentEdit viewer={this.props.viewer}
+                                  comment={this.props.comment}
+                                  onSuccess={this.handleHideEditForm} />);
+    } else {
+      commentBody = (
+        <Markdown options={markdownOptions} container="div">{comment.body}</Markdown>
+      );
+    }
+
     return (
       <Media className="list-group-item comments-item">
         <Media.Left>
@@ -65,12 +88,21 @@ class CommentItem extends React.Component {
         </Media.Left>
         <Media.Body>
           <Media.Heading><a href="#">{ comment.revisionCreated.author.username }</a></Media.Heading>
-          <p>{ comment.body }</p>
+          
+          {commentBody}
 
           {voting}
 
           <button className="btn btn-link" onClick={this.handleToggleReplyForm}>
             <i className="fa fa-reply" aria-hidden="true"></i> responder
+          </button>
+
+          <button className="btn btn-link" onClick={this.handleShowEditForm}>
+            <i className="fa fa-pencil" aria-hidden="true"></i> editar
+          </button>
+
+          <button className="btn btn-link" onClick={this.handleToggleReplyForm}>
+            <i className="fa fa-trash" aria-hidden="true"></i> excluir
           </button>
           
           <CommentsReplies
@@ -112,6 +144,7 @@ export default Relay.createContainer(CommentItem, {
           ${CommentCreate.getFragment('commenting')},
           ${CommentsReplies.getFragment('commenting').if(variables.expanded)},
         },
+        ${CommentEdit.getFragment('comment')},
       }
     `,
     viewer: (variables) => Relay.QL`
@@ -120,6 +153,7 @@ export default Relay.createContainer(CommentItem, {
         me {
           isAuthenticated
         },
+        ${CommentEdit.getFragment('viewer')},
         ${CommentCreate.getFragment('viewer')},
         ${VotingButtons.getFragment('viewer')},
         ${CommentsReplies.getFragment('viewer').if(variables.expanded)},

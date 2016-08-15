@@ -22,7 +22,7 @@ const PostDate = injectIntl(({date, intl}) => (
 ));
 
 var markdownOptions = {
-  html: true,
+  html: false,
 };
 
 class Post extends React.Component {
