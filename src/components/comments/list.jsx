@@ -25,7 +25,10 @@ class CommentsList extends React.Component {
     var comments_rendered = comments.edges.map(function(edge, i){
         var comment = edge.node;
         return (
-          <CommentItem key={comment.id} viewer={viewer} comment={comment} />
+          <CommentItem key={comment.id}
+                       viewer={viewer}
+                       comment={comment}
+                       commenting={commenting} />
         );
       });
     // }
@@ -59,6 +62,7 @@ export default Relay.createContainer(CommentsList, {
             }
           }
         }
+        ${CommentItem.getFragment('commenting')},
         ${CommentCreate.getFragment('commenting')},
       }
     `,

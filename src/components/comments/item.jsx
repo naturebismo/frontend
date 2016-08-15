@@ -6,6 +6,7 @@ import Markdown from 'react-remarkable';
 import VotingButtons from '../voting/buttons';
 import CommentCreate from './add';
 import CommentEdit from './edit';
+import CommentDelete from './delete';
 import CommentsReplies from './replies';
 
 import {markdownOptions} from "../blog/Post";
@@ -101,9 +102,9 @@ class CommentItem extends React.Component {
             <i className="fa fa-pencil" aria-hidden="true"></i> editar
           </button>
 
-          <button className="btn btn-link" onClick={this.handleToggleReplyForm}>
-            <i className="fa fa-trash" aria-hidden="true"></i> excluir
-          </button>
+          <CommentDelete comment={this.props.comment}
+                         commenting={this.props.commenting}
+                         viewer={this.props.viewer} />
           
           <CommentsReplies
             viewer={this.props.viewer}
@@ -145,6 +146,13 @@ export default Relay.createContainer(CommentItem, {
           ${CommentsReplies.getFragment('commenting').if(variables.expanded)},
         },
         ${CommentEdit.getFragment('comment')},
+        ${CommentDelete.getFragment('comment')},
+      }
+    `,
+    commenting: (variables) => Relay.QL`
+      fragment on Commenting {
+        id,
+        ${CommentDelete.getFragment('commenting')},
       }
     `,
     viewer: (variables) => Relay.QL`
