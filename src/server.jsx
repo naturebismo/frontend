@@ -34,6 +34,15 @@ app.get('*', (req, res, next) => {
     });
 });
 
+// app.use(require('webpack-dev-middleware')(compiler, {
+//   quiet: true,
+//   publicPath: config.output.publicPath,
+// }));
+
+// app.use(require('webpack-hot-middleware')(compiler, {
+//   log: () => {}
+// }));
+
 app.listen(APP_PORT, () => {
     console.log(`App is now running on http://localhost:${APP_PORT}`);
 });

@@ -4,6 +4,9 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+var Dashboard = require('webpack-dashboard');
+var DashboardPlugin = require('webpack-dashboard/plugin');
+var dashboard = new Dashboard();
 
 const pkg = require('./package.json');
 
@@ -50,7 +53,8 @@ const common = {
       title: 'Naturebismo',
       appMountId: 'root',
       inject: false
-    })
+    }),
+    new DashboardPlugin(dashboard.setData)
   ]
 };
 
@@ -60,6 +64,7 @@ if(TARGET === 'start' || !TARGET) {
     devServer: {
       historyApiFallback: true,
       hot: true,
+      quiet: true, // lets WebpackDashboard do its thing
       inline: true,
       progress: true,
 
