@@ -33,7 +33,8 @@ class CommentsList extends React.Component {
       });
     // }
 
-    var replyForm = (<CommentCreate viewer={this.props.viewer} commenting={this.props.commenting} />);
+    var replyForm = (<CommentCreate viewer={this.props.viewer}
+                                    commenting={this.props.commenting} />);
 
     return (
       <div className="list-group comments-list">

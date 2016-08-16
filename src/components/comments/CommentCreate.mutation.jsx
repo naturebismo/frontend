@@ -1,4 +1,5 @@
 import Relay from 'react-relay';
+import CommentItem from './item';
 
 export default class CommentCreateMutation extends Relay.Mutation {
   static fragments = {
@@ -30,15 +31,7 @@ export default class CommentCreateMutation extends Relay.Mutation {
         comment {
           node {
             id,
-            body,
-            commenting {
-              count
-            },
-            revisionCreated {
-                author {
-                    username
-                }
-            }
+            ${CommentItem.getFragment('comment')},
           }
         }
       }
@@ -76,7 +69,13 @@ export default class CommentCreateMutation extends Relay.Mutation {
           revisionCreated: {
             author: {
               username: this.props.viewer.me.username,
+              avatar: {
+                x140x140: this.props.viewer.me.avatar.x140x140,
+              }
             }
+          },
+          document: {
+            revisionsCount: 1,
           },
           commenting: {
             'count': 0,

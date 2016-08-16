@@ -28,6 +28,9 @@ export default class CommentEditMutation extends Relay.Mutation {
           commenting {
             count
           },
+          document {
+            revisionsCount
+          },
           revisionCreated {
               author {
                   username

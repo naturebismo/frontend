@@ -1,5 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
+import { Link } from 'react-router';
 import { Media, Button } from "react-bootstrap";
 import Markdown from 'react-remarkable';
 
@@ -98,6 +99,8 @@ class CommentItem extends React.Component {
             <i className="fa fa-reply" aria-hidden="true"></i> responder
           </button>
 
+          <Link to={`/revisions/comment/${comment.id}`}>{comment.document.revisionsCount} alterações</Link>
+
           <button className="btn btn-link" onClick={this.handleShowEditForm}>
             <i className="fa fa-pencil" aria-hidden="true"></i> editar
           </button>
@@ -128,6 +131,9 @@ export default Relay.createContainer(CommentItem, {
       fragment on Comment {
         id,
         body,
+        document {
+          revisionsCount
+        },
         revisionCreated {
           author {
             username
