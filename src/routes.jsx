@@ -9,11 +9,14 @@ import Home from './components/Home';
 
 import Post from './components/blog/Post';
 import PostQueries from './components/blog/Post.queries';
-import {PostIDQueries, PostRevisionIDQueries} from './components/blog/PostID.queries';
+import {PostIDQueries} from './components/blog/PostID.queries';
 import PostCreate from './components/blog/PostCreate';
 import PostEdit from './components/blog/PostEdit';
-import PostRevision from './components/blog/PostRevision';
-import PostRevisions from './components/blog/PostRevisions';
+
+import RevisionsList from './components/revisions/list';
+import RevisionItem from './components/revisions/item';
+import RevisionIDQueries from './components/revisions/RevisionID.queries';
+import {NodeIDQueries, NodeRevisionIDQueries} from './components/nodes/NodeID.queries';
 
 import Tag from './components/tags/Tag';
 import {TagSlugQueries, TagIDQueries} from './components/tags/Tag.queries';
@@ -54,11 +57,11 @@ export default (
       queries={PostQueries}
       prepareParams={preparePostParams} />
     <Route
-      path="revisions/post/revision/:revisionID" component={PostRevision}
-      queries={PostRevisionIDQueries} />
+      path="revisions/:nodeID" component={RevisionsList}
+      queries={NodeIDQueries} />
     <Route
-      path="revisions/post/:postID" component={PostRevisions}
-      queries={PostIDQueries} />
+      path="revisions/revision/:revisionID" component={RevisionItem}
+      queries={RevisionIDQueries} />
     <Route
       path="tag/:tagSlug" component={Tag}
       queries={TagSlugQueries} />

@@ -18,15 +18,24 @@ const PostDate = injectIntl(({date, intl}) => (
 
 const pageSize = 30;
 
-class PostRevisions extends React.Component {
+class RevisionsList extends React.Component {
 
   render() {
-    var post = this.props.post;
+    var node = this.props.node;
+
+    if(node.__typename === 'Post') {
+      var title = node.title;
+    }
+
+    if(node.__typename === 'Comment') {
+      var title = "Comentário " + node.id;
+    }
+
     return (<div>
-      <h1>{`Historico de alterações: ${post.title}`}</h1>
+      <h1>{`Historico de alterações: ${title}`}</h1>
       <Table responsive>
         <Helmet
-           title={`Historico de alterações: ${post.title}`}
+           title={`Historico de alterações: ${title}`}
         />
         <thead>
           <tr>
@@ -36,10 +45,10 @@ class PostRevisions extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {post.revisions.edges.map(function(edge, i){
+          {node.revisions.edges.map(function(edge, i){
             var revision = edge.node;
             return (<tr key={i}>
-                <td><Link to={`/revisions/post/revision/${revision.id}`}>{revision.id}</Link></td>
+                <td><Link to={`/revisions/revision/${revision.id}`}>{revision.id}</Link></td>
                 <td>{revision.author.username}</td>
                 <td><PostDate date={revision.createdAt} /></td>
               </tr>);
@@ -50,29 +59,42 @@ class PostRevisions extends React.Component {
   }
 }
 
-PostRevisions.contextTypes = {
-  router: React.PropTypes.object.isRequired,
-}
-
-export default Relay.createContainer(PostRevisions, {
+export default Relay.createContainer(RevisionsList, {
   initialVariables: {
     pageSize: pageSize
   },
   fragments: {
-    post: () => Relay.QL`
-      fragment on Post {
-        title
-        revisions(first: $pageSize) {
-          edges {
-            node {
-              id,
-              author {
-                username
-              }
-              parent {
+    node: () => Relay.QL`
+      fragment on Node {
+        id
+
+        ... on Post {
+          title
+          __typename
+          revisions(first: $pageSize) {
+            edges {
+              node {
                 id
+                author {
+                  username
+                }
+                createdAt
               }
-              createdAt
+            }
+          }
+        }
+
+        ... on Comment {
+          __typename
+          revisions(first: $pageSize) {
+            edges {
+              node {
+                id
+                author {
+                  username
+                }
+                createdAt
+              }
             }
           }
         }
@@ -80,7 +102,7 @@ export default Relay.createContainer(PostRevisions, {
     `,
     viewer: () => Relay.QL`
       fragment on Query {
-        id,
+        id
       }
     `,
   },

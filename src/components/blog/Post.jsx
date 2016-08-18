@@ -58,7 +58,7 @@ class Post extends React.Component {
             <a href="#">{post.commenting.count} comentarios</a><span> . </span>
             enviada por <a href="#">{ post.revisionCreated.author.username }</a> <i className="fa fa-clock-o"
               aria-hidden="true"></i> <PostDate date={post.publishedAt} /><span> . </span>
-            <Link to={`/revisions/post/${post.id}`}>{post.document.revisionsCount} alterações</Link><span> . </span>
+            <Link to={`/revisions/${post.id}`}>{post.document.revisionsCount} alterações</Link><span> . </span>
             {postEditorActions}
           </div>
           

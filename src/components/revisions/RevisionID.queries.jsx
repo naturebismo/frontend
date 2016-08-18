@@ -1,9 +1,9 @@
 import Relay from 'react-relay';
 
 export default {
-  post: () => Relay.QL`
+  revision: () => Relay.QL`
     query {
-      post(id: $postID)
+      revision(id: $revisionID)
     }
   `,
   viewer: () => Relay.QL`query { viewer }`

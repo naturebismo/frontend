@@ -12,6 +12,17 @@ import CommentsReplies from './replies';
 
 import {markdownOptions} from "../blog/Post";
 
+import {
+    injectIntl,
+    FormattedRelative,
+} from 'react-intl';
+
+const PostDate = injectIntl(({date, intl}) => (
+    <span title={intl.formatDate(date)}>
+        <FormattedRelative value={date}/>
+    </span>
+));
+
 
 class CommentItem extends React.Component {
   state = {replyFormExpanded: false, editing: false}
@@ -89,7 +100,10 @@ class CommentItem extends React.Component {
                alt={comment.revisionCreated.author.username} />
         </Media.Left>
         <Media.Body>
-          <Media.Heading><a href="#">{ comment.revisionCreated.author.username }</a></Media.Heading>
+          <Media.Heading>
+            <a href="#">{ comment.revisionCreated.author.username }</a> . <i className="fa fa-clock-o"
+              aria-hidden="true"></i> <PostDate date={comment.revisionCreated.createdAt} />
+          </Media.Heading>
           
           {commentBody}
 
@@ -99,7 +113,7 @@ class CommentItem extends React.Component {
             <i className="fa fa-reply" aria-hidden="true"></i> responder
           </button>
 
-          <Link to={`/revisions/comment/${comment.id}`}>{comment.document.revisionsCount} alterações</Link>
+          <Link to={`/revisions/${comment.id}`}>{comment.document.revisionsCount} alterações</Link>
 
           <button className="btn btn-link" onClick={this.handleShowEditForm}>
             <i className="fa fa-pencil" aria-hidden="true"></i> editar
