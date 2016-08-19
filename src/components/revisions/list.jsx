@@ -49,8 +49,14 @@ class RevisionsList extends React.Component {
         <tbody>
           {node.revisions.edges.map(function(edge, i){
             var revision = edge.node;
+
+            var current;
+            if(revision.isTip) {
+              current = (<span className="label label-success"><i className="fa fa-check" aria-hidden="true"></i> atual</span>);
+            }
+    
             return (<tr key={i}>
-                <td><Link to={`/revisions/revision/${revision.id}`}>{revision.id}</Link></td>
+                <td><Link to={`/revisions/revision/${revision.id}`}>{revision.id}</Link> {current}</td>
                 <td><ProfileLink user={revision.author} /></td>
                 <td><PostDate date={revision.createdAt} /></td>
               </tr>);
@@ -77,6 +83,7 @@ export default Relay.createContainer(RevisionsList, {
             edges {
               node {
                 id
+                isTip
                 author {
                   ${ProfileLink.getFragment('user')}
                 }
@@ -92,6 +99,7 @@ export default Relay.createContainer(RevisionsList, {
             edges {
               node {
                 id
+                isTip
                 author {
                   ${ProfileLink.getFragment('user')}
                 }
