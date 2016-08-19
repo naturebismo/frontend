@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { Media, Button } from "react-bootstrap";
 import Markdown from 'react-remarkable';
 
+import ProfileLink from '../accounts/ProfileLink';
 import VotingButtons from '../voting/buttons';
 import CommentCreate from './add';
 import CommentEdit from './edit';
@@ -101,8 +102,8 @@ class CommentItem extends React.Component {
         </Media.Left>
         <Media.Body>
           <Media.Heading>
-            <a href="#">{ comment.revisionCreated.author.username }</a> . <i className="fa fa-clock-o"
-              aria-hidden="true"></i> <PostDate date={comment.revisionCreated.createdAt} />
+            <ProfileLink user={comment.revisionCreated.author} /> . <small><i className="fa fa-clock-o"
+              aria-hidden="true"></i> <PostDate date={comment.revisionCreated.createdAt} /></small>
           </Media.Heading>
           
           {commentBody}
@@ -150,10 +151,10 @@ export default Relay.createContainer(CommentItem, {
         },
         revisionCreated {
           author {
-            username
             avatar {
               x140x140
             }
+            ${ProfileLink.getFragment('user')}
           },
           createdAt
         },

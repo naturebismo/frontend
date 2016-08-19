@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import { Table } from "react-bootstrap";
 import Markdown from 'react-remarkable';
 
+import ProfileLink from '../accounts/ProfileLink';
 import {markdownOptions} from "../blog/Post";
 
 import {
@@ -55,7 +56,7 @@ class RevisionItem extends React.Component {
         <div className="page-header" style={{marginTop: 0}}>
           <h1 style={{marginTop: 0}}>Comentário: {comment.id}</h1>
           
-          <a href="#">{ comment.revisionCreated.author.username }</a> . <i className="fa fa-clock-o"
+          <ProfileLink user={comment.revisionCreated.author} /> . <i className="fa fa-clock-o"
             aria-hidden="true"></i> <PostDate date={comment.revisionCreated.createdAt} />
         </div>
 
@@ -97,7 +98,7 @@ export default Relay.createContainer(RevisionItem, {
       fragment on Revision {
         id
         author {
-          username
+          ${ProfileLink.getFragment('user')}
         }
         createdAt
         after(first: 50) {

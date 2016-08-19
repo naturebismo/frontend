@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import {FormattedMessage} from 'react-intl';
 
+import ProfileLink from '../accounts/ProfileLink';
 import VotingButtons from '../voting/buttons';
 import CommentsList from '../comments/list';
 import PostDelete from './PostDelete';
@@ -56,7 +57,7 @@ class Post extends React.Component {
             })}<br/>
             <a href="#">9 gostaram</a> . <a href="#">1 não gostou</a><span> . </span>
             <a href="#">{post.commenting.count} comentarios</a><span> . </span>
-            enviada por <a href="#">{ post.revisionCreated.author.username }</a> <i className="fa fa-clock-o"
+            enviada por <ProfileLink user={post.revisionCreated.author} /> <i className="fa fa-clock-o"
               aria-hidden="true"></i> <PostDate date={post.publishedAt} /><span> . </span>
             <Link to={`/revisions/${post.id}`}>{post.document.revisionsCount} alterações</Link><span> . </span>
             {postEditorActions}
@@ -102,7 +103,7 @@ export default Relay.createContainer(Post, {
         },
         revisionCreated {
           author {
-            username
+            ${ProfileLink.getFragment('user')}
           }
         }
         commenting {

@@ -4,6 +4,8 @@ import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { Table } from "react-bootstrap";
 
+import ProfileLink from '../accounts/ProfileLink';
+
 import {
     injectIntl,
     FormattedRelative,
@@ -49,7 +51,7 @@ class RevisionsList extends React.Component {
             var revision = edge.node;
             return (<tr key={i}>
                 <td><Link to={`/revisions/revision/${revision.id}`}>{revision.id}</Link></td>
-                <td>{revision.author.username}</td>
+                <td><ProfileLink user={revision.author} /></td>
                 <td><PostDate date={revision.createdAt} /></td>
               </tr>);
           })}
@@ -76,7 +78,7 @@ export default Relay.createContainer(RevisionsList, {
               node {
                 id
                 author {
-                  username
+                  ${ProfileLink.getFragment('user')}
                 }
                 createdAt
               }
@@ -91,7 +93,7 @@ export default Relay.createContainer(RevisionsList, {
               node {
                 id
                 author {
-                  username
+                  ${ProfileLink.getFragment('user')}
                 }
                 createdAt
               }
