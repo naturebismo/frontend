@@ -51,13 +51,11 @@ class Post extends React.Component {
           
           <div className="page-header" style={{marginTop: 0}}>
             <h1 style={{marginTop: 0}}>{post.title}</h1>
-            {post.tags.edges.map(function(edge, i){
+            <p>{post.tags.edges.map(function(edge, i){
               var tag = edge.node;
-              return (<Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link>);
-            })}<br/>
-            <a href="#">9 gostaram</a> . <a href="#">1 não gostou</a><span> . </span>
-            <a href="#">{post.commenting.count} comentarios</a><span> . </span>
-            enviada por <ProfileLink user={post.revisionCreated.author} /> <i className="fa fa-clock-o"
+              return (<span><Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link> </span>);
+            })}</p>
+            Enviada por <ProfileLink user={post.revisionCreated.author} /> <i className="fa fa-clock-o"
               aria-hidden="true"></i> <PostDate date={post.publishedAt} /><span> . </span>
             <Link to={`/revisions/${post.id}`}>{post.document.revisionsCount} alterações</Link><span> . </span>
             {postEditorActions}
