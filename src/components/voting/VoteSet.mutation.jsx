@@ -17,7 +17,7 @@ export default class VoteSetMutation extends Relay.Mutation {
         voting {
           id,
           count,
-          sumValues,
+          countUps,
           mine {
             id,
             value

@@ -1,5 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 import LoginRequired from '../accounts/LoginRequired';
 import VoteSetMutation from './VoteSet.mutation';
@@ -29,30 +30,45 @@ class VotingButtons extends React.Component {
   }
 
   render() {
+    var voting = this.props.voting;
     var vote_up_class = 'btn btn-default';
     var vote_down_class = 'btn btn-default';
     var button_delete;
 
-    if(this.props.voting.mine) {
-      if(this.props.voting.mine.value == 1) {
+    if(voting.mine) {
+      if(voting.mine.value == 1) {
         vote_up_class += ' active';
       }
 
-      if(this.props.voting.mine.value == -1) {
+      if(voting.mine.value == -1) {
         vote_down_class += ' active';
       }
 
+      var tooltip_delete = (<Tooltip>excluir</Tooltip>);
       button_delete = (
+        <OverlayTrigger placement="top" overlay={tooltip_delete}>
         <button className='btn btn-danger tip' title="Remover" onClick={this.handleVoteDelete}>
           <i className="fa fa-close" aria-hidden="true"></i>
         </button>
+        </OverlayTrigger>
       );
     }
+
+    var accept_percent = 0;
+    if(voting.count > 0) {
+      accept_percent = (voting.countUps * 100.0) / voting.count;
+    }
+    var accept_title = (<Tooltip>
+        {voting.count} pessoas votaram com<br />
+        <strong>{accept_percent}% de aceitação</strong>.
+      </Tooltip>);
 
     return (
       <span className="voting-buttons" role="toolbar" aria-label="...">
         <span  className="btn-group" role="groutp" aria-label="...">
-          <span className="btn btn-default">{this.props.voting.sumValues} - {this.props.voting.count}</span>
+          <OverlayTrigger placement="top" overlay={accept_title}>
+            <span className="btn btn-default">{voting.count}</span>
+          </OverlayTrigger>
           <button className={vote_up_class} value="1" onClick={this.handleVoteSet}>
             <i className="fa fa-thumbs-up" aria-hidden="true"></i> gostei
           </button>
@@ -73,7 +89,7 @@ export default Relay.createContainer(VotingButtons, {
     voting: () => Relay.QL`
       fragment on Voting {
         id,
-        sumValues,
+        countUps,
         count,
         mine {
           id
