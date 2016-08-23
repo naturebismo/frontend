@@ -93,6 +93,20 @@ class CommentItem extends React.Component {
       );
     }
 
+    var editButton;
+    if(comment.myPerms.indexOf('edit') >= 0) {
+      editButton = (<button className="btn btn-link" onClick={this.handleShowEditForm}>
+          <i className="fa fa-pencil" aria-hidden="true"></i> editar
+        </button>);
+    }
+
+    var deleteButton;
+    if(comment.myPerms.indexOf('delete') >= 0) {
+      deleteButton = (<CommentDelete comment={this.props.comment}
+                                   commenting={this.props.commenting}
+                                   viewer={this.props.viewer} />);
+    }
+
     return (
       <Media className="list-group-item comments-item">
         <Media.Left>
@@ -116,13 +130,8 @@ class CommentItem extends React.Component {
 
           <Link to={`/revisions/${comment.id}`}>{comment.document.revisionsCount} alterações</Link>
 
-          <button className="btn btn-link" onClick={this.handleShowEditForm}>
-            <i className="fa fa-pencil" aria-hidden="true"></i> editar
-          </button>
-
-          <CommentDelete comment={this.props.comment}
-                         commenting={this.props.commenting}
-                         viewer={this.props.viewer} />
+          {editButton}
+          {deleteButton}
           
           <CommentsReplies
             viewer={this.props.viewer}
@@ -146,6 +155,7 @@ export default Relay.createContainer(CommentItem, {
       fragment on Comment {
         id,
         body,
+        myPerms,
         document {
           revisionsCount
         },

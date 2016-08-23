@@ -12,7 +12,10 @@ export default class CommentCreateMutation extends Relay.Mutation {
       fragment on Query {
         id,
         me {
-          username
+          username,
+          avatar {
+            x140x140
+          }
         }
       }
     `,
