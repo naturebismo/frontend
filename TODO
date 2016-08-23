@@ -1,2 +1,1 @@
-* reverter o conteudo para uma versão antiga
-* usar ID's numericos apenas, e não esses base64 incluindo o nome do tipo do Node, o backend não precisa disso 
+* usar ID's numericos apenas, e não esses base64 incluindo o nome do tipo do Node, o backend não precisa disso

@@ -5,8 +5,11 @@ import Helmet from 'react-helmet';
 import { Table } from "react-bootstrap";
 import Markdown from 'react-remarkable';
 
+import LoginRequired from '../accounts/LoginRequired';
 import ProfileLink from '../accounts/ProfileLink';
 import {markdownOptions} from "../blog/Post";
+import RevisionRevertMutation from './RevisionRevert.mutation';
+
 
 import {
     injectIntl,
@@ -20,6 +23,22 @@ const PostDate = injectIntl(({date, intl}) => (
 ));
 
 class RevisionItem extends React.Component {
+  state = {}
+
+  handleRevisionRevert = (e) => {
+    e.preventDefault();
+
+    this.refs.loginRequired.refs.component.commitUpdate(
+      new RevisionRevertMutation({
+          revision: this.props.revision,
+          node: this.props.revision.object}),
+      {
+        onSuccess: (response) => {
+          window.location.reload(false);
+        }
+      }
+    );
+  }
 
   render() {
     var revision = this.props.revision;
@@ -81,11 +100,27 @@ class RevisionItem extends React.Component {
       var after = null;
     }
 
+    var current;
+    if(revision.isTip) {
+      current = (<p>
+        <span className="label label-success">
+          <i className="fa fa-check" aria-hidden="true"></i> atual
+        </span>
+      </p>);
+    } else {
+      current = (<p>
+        <button className="btn btn-primary" onClick={this.handleRevisionRevert}>reverter para esta versão</button>
+        <LoginRequired viewer={this.props.viewer} ref="loginRequired" showMessage={true} />
+      </p>);
+    }
+
     return (<div>
-      <p>Alteração <strong>{revision.id}</strong> feita por {revision.author.username} <PostDate date={revision.createdAt} /></p>
-     
+      <p>Alteração <strong>{revision.id}</strong> feita por <ProfileLink user={revision.author} /> <PostDate date={revision.createdAt} /></p>
+
       {after}
       {before}
+
+      {current}
 
       {revision_body}
     </div>);
@@ -97,6 +132,7 @@ export default Relay.createContainer(RevisionItem, {
     revision: () => Relay.QL`
       fragment on Revision {
         id
+        isTip
         author {
           ${ProfileLink.getFragment('user')}
         }
@@ -141,12 +177,15 @@ export default Relay.createContainer(RevisionItem, {
               createdAt
             },
           }
+          ${RevisionRevertMutation.getFragment('node')}
         }
+        ${RevisionRevertMutation.getFragment('revision')}
       }
     `,
     viewer: () => Relay.QL`
       fragment on Query {
         id,
+        ${LoginRequired.getFragment('viewer')},
       }
     `,
   },

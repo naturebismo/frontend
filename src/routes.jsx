@@ -16,7 +16,7 @@ import PostEdit from './components/blog/PostEdit';
 import RevisionsList from './components/revisions/list';
 import RevisionItem from './components/revisions/item';
 import RevisionIDQueries from './components/revisions/RevisionID.queries';
-import {NodeIDQueries, NodeRevisionIDQueries} from './components/nodes/NodeID.queries';
+import NodeIDQueries from './components/nodes/NodeID.queries';
 
 import Tag from './components/tags/Tag';
 import {TagSlugQueries, TagIDQueries} from './components/tags/Tag.queries';

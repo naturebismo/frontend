@@ -1,6 +1,6 @@
 import Relay from 'react-relay';
 
-var NodeIDQueries = {
+export default {
   node: () => Relay.QL`
     query {
       node(id: $nodeID)
@@ -8,14 +8,3 @@ var NodeIDQueries = {
   `,
   viewer: () => Relay.QL`query { viewer }`
 }
-
-var NodeRevisionIDQueries = {
-  node: () => Relay.QL`
-    query {
-      nodeByRevisionId(id: $revisionID)
-    }
-  `,
-  viewer: () => Relay.QL`query { viewer }`
-}
-
-export {NodeIDQueries, NodeRevisionIDQueries};
