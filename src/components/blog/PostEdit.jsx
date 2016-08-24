@@ -3,10 +3,13 @@ import Relay from 'react-relay';
 import PostEditMutation from './PostEdit.mutation'
 import { FormGroup, FormControl, ControlLabel, HelpBlock, Button } from "react-bootstrap";
 import Helmet from 'react-helmet';
+import RichTextEditor from 'react-rte-image';
 
 
 class PostEdit extends React.Component {
-  state = {url: '', title: '', body: '', publishedAt: '', 'tags': ''};
+  state = {url: '', title: '',
+           body: RichTextEditor.createEmptyValue(),
+           publishedAt: '', 'tags': ''};
 
   handleURLChange = (e) => {
     this.setState({url: e.target.value});
@@ -16,8 +19,8 @@ class PostEdit extends React.Component {
     this.setState({title: e.target.value});
   }
 
-  handleBodyChange = (e) => {
-    this.setState({body: e.target.value});
+  handleBodyChange = (value) => {
+    this.setState({body: value});
   }
 
   handlePublishedAtChange = (e) => {
@@ -35,7 +38,7 @@ class PostEdit extends React.Component {
           post: this.props.post,
           url: this.state.url,
           title: this.state.title,
-          body: this.state.body,
+          body: this.state.body.toString('markdown'),
           tags: this.state.tags,
           publishedAt: this.state.publishedAt,
           viewer: this.props.viewer}),
@@ -58,7 +61,7 @@ class PostEdit extends React.Component {
       url: post.url,
       title: post.title,
       publishedAt: post.publishedAt,
-      body: post.body,
+      body: RichTextEditor.createValueFromString(post.body, 'markdown'),
       tags: tags.join(', ')
     });
   }
@@ -88,7 +91,10 @@ class PostEdit extends React.Component {
         
         <FormGroup controlId="formControlsTextarea">
           <ControlLabel>Body</ControlLabel>
-          <FormControl componentClass="textarea" rows="20" placeholder="Page's body" onChange={this.handleBodyChange} value={this.state.body} />
+          <RichTextEditor
+            value={this.state.body}
+            onChange={this.handleBodyChange}
+          />
         </FormGroup>
 
         <FormGroup controlId="formControlsText">

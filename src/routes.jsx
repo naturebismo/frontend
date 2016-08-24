@@ -9,7 +9,7 @@ import Home from './components/Home';
 
 import Post from './components/blog/Post';
 import PostQueries from './components/blog/Post.queries';
-import {PostIDQueries} from './components/blog/PostID.queries';
+import PostIDQueries from './components/blog/PostID.queries';
 import PostCreate from './components/blog/PostCreate';
 import PostEdit from './components/blog/PostEdit';
 
