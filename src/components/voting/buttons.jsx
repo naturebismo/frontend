@@ -44,7 +44,7 @@ class VotingButtons extends React.Component {
         vote_down_class += ' active';
       }
 
-      var tooltip_delete = (<Tooltip>excluir</Tooltip>);
+      var tooltip_delete = (<Tooltip id={`tooltip_voting_delete_${voting.id}`}>excluir</Tooltip>);
       button_delete = (
         <OverlayTrigger placement="top" overlay={tooltip_delete}>
         <button className='btn btn-danger tip' title="Remover" onClick={this.handleVoteDelete}>
@@ -58,7 +58,7 @@ class VotingButtons extends React.Component {
     if(voting.count > 0) {
       accept_percent = (voting.countUps * 100.0) / voting.count;
     }
-    var accept_title = (<Tooltip>
+    var accept_title = (<Tooltip id={`tooltip_voting_stats_${voting.id}`}>
         {voting.count} pessoas votaram com<br />
         <strong>{accept_percent}% de aceitação</strong>.
       </Tooltip>);

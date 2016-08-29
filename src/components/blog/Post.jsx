@@ -65,7 +65,7 @@ class Post extends React.Component {
             <h1 style={{marginTop: 0}}>{post.title}</h1>
             <p>{post.tags.edges.map(function(edge, i){
               var tag = edge.node;
-              return (<span><Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link> </span>);
+              return (<span key={tag.id}><Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link> </span>);
             })}</p>
             Enviada por <ProfileLink user={post.revisionCreated.author} /> <i className="fa fa-clock-o"
               aria-hidden="true"></i> <PostDate date={post.publishedAt} /><span> . </span>
@@ -107,6 +107,7 @@ export default Relay.createContainer(Post, {
         tags(first: 50) {
           edges {
             node {
+              id,
               slug,
               title,
             }
