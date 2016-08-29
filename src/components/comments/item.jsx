@@ -94,17 +94,18 @@ class CommentItem extends React.Component {
     }
 
     var editButton;
-    if(comment.myPerms.indexOf('edit') >= 0) {
-      editButton = (<button className="btn btn-link" onClick={this.handleShowEditForm}>
-          <i className="fa fa-pencil" aria-hidden="true"></i> editar
-        </button>);
-    }
-
     var deleteButton;
-    if(comment.myPerms.indexOf('delete') >= 0) {
-      deleteButton = (<CommentDelete comment={this.props.comment}
-                                   commenting={this.props.commenting}
-                                   viewer={this.props.viewer} />);
+    if(typeof this.props.comment.myPerms !== 'undefined') {
+      if(comment.myPerms.indexOf('edit') >= 0) {
+        editButton = (<button className="btn btn-link" onClick={this.handleShowEditForm}>
+            <i className="fa fa-pencil" aria-hidden="true"></i> editar
+          </button>);
+      }
+      if(comment.myPerms.indexOf('delete') >= 0) {
+        deleteButton = (<CommentDelete comment={this.props.comment}
+                                     commenting={this.props.commenting}
+                                     viewer={this.props.viewer} />);
+      }
     }
 
     return (
@@ -194,6 +195,7 @@ export default Relay.createContainer(CommentItem, {
         },
         ${CommentEdit.getFragment('viewer')},
         ${CommentCreate.getFragment('viewer')},
+        ${CommentDelete.getFragment('viewer')},
         ${VotingButtons.getFragment('viewer')},
         ${CommentsReplies.getFragment('viewer').if(variables.expanded)},
       }

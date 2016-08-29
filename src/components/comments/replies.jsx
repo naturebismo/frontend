@@ -76,6 +76,7 @@ export default Relay.createContainer(CommentsReplies, {
           }
         }
         ${CommentCreate.getFragment('commenting')},
+        ${CommentItem.getFragment('commenting')},
       }
     `,
     viewer: (variables) => Relay.QL`

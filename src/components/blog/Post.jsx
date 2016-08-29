@@ -35,9 +35,21 @@ class Post extends React.Component {
     var postEditorActions = null;
     if(this.props.viewer.me !== null) { 
       if(this.props.viewer.me.isAuthenticated === true) {
+        var editButton;
+        if(post.myPerms.indexOf('edit') >= 0) {
+          editButton = (<Link to={`/blog/edit/${post.id}`}>
+            <i className="fa fa-pencil" aria-hidden="true"></i> editar
+          </Link>);
+        }
+
+        var deleteButton;
+        if(post.myPerms.indexOf('delete') >= 0) {
+          deleteButton = (<PostDelete viewer={this.props.viewer} post={this.props.post} />);
+        }
+
         var postEditorActions = (<span>
-            <Link to={`/blog/edit/${post.id}`}>editar</Link><span> . </span>
-            <PostDelete viewer={this.props.viewer} post={this.props.post} />
+            {editButton}<span> . </span>
+            {deleteButton}
           </span>);
       }
     }
@@ -88,6 +100,7 @@ export default Relay.createContainer(Post, {
         title,
         body,
         publishedAt,
+        myPerms,
         document {
           revisionsCount
         },

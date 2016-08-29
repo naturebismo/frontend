@@ -1,9 +1,13 @@
 import React from 'react';
 import Relay from 'react-relay';
-import PostDeleteMutation from './PostDelete.mutation'
+
+import PostDeleteMutation from './PostDelete.mutation';
+import ConfirmDelete from '../nodes/confirmDelete';
 
 class PostDelete extends React.Component {
-  handleClick = (e) => {
+  state = {}
+
+  handleDelete = (e) => {
     e.preventDefault();
 
     Relay.Store.commitUpdate(
@@ -20,7 +24,7 @@ class PostDelete extends React.Component {
   }
 
   render() {
-    return (<a href="#" onClick={this.handleClick}>excluir</a>);
+    return (<ConfirmDelete viewer={this.props.viewer} handleDelete={this.handleDelete} />);
   }
 }
 
@@ -38,6 +42,7 @@ export default Relay.createContainer(PostDelete, {
     viewer: () => Relay.QL`
       fragment on Query {
         ${PostDeleteMutation.getFragment('viewer')},
+        ${ConfirmDelete.getFragment('viewer')},
       }
     `,
   },

@@ -75,7 +75,8 @@ export default class CommentCreateMutation extends Relay.Mutation {
               avatar: {
                 x140x140: this.props.viewer.me.avatar.x140x140,
               }
-            }
+            },
+            createdAt: new Date().toJSON(),
           },
           document: {
             revisionsCount: 1,

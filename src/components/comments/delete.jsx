@@ -3,70 +3,31 @@ import Relay from 'react-relay';
 import { Modal } from "react-bootstrap";
 
 import CommentDeleteMutation from './CommentDelete.mutation';
-import LoginRequired from '../accounts/LoginRequired';
+import ConfirmDelete from '../nodes/confirmDelete';
 
 class CommentDelete extends React.Component {
-  state = {showModal: false}
+  state = {}
 
-  openModal = (e) => {
-    e.preventDefault();
-    this.setState({showModal: true});
-  }
-
-  closeModal = () => {
-    this.setState({showModal: false});
-  }
-
-  handleClick = (e) => {
+  handleDelete = (e) => {
     e.preventDefault();
 
-    this.refs.loginRequired.refs.component.commitUpdate(
+    Relay.Store.commitUpdate(
       new CommentDeleteMutation({
           commenting: this.props.commenting,
           comment: this.props.comment,
       }),
       {
         onSuccess: (response) => {
-          this.closeModal();
+          this.refs.confirmDelete.refs.component.closeModal();
         },
       }
     );
   }
 
-  handleAskConfirmation = (e) => {
-
-  }
-
   render() {
-
-    var confirmation;
-    if(this.state.showModal) {
-      confirmation = (<Modal show={this.state.showModal} onHide={this.closeModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Você tem certeza que deseja excluir?</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <button className="btn btn-primary"
-                    onClick={this.handleClick}>
-              Sim, excluir
-            </button> <button
-                    className="btn btn-danger"
-                    onClick={this.closeModal}>
-              Não
-            </button>
-          </Modal.Body>
-        </Modal>);
-    }
-
-    return (<span>
-      <button className="btn btn-link" onClick={this.openModal}>
-        <i className="fa fa-trash" aria-hidden="true"></i> excluir
-      </button>
-
-      {confirmation}
-
-      <LoginRequired viewer={this.props.viewer} ref="loginRequired" showMessage={true} />
-    </span>);
+    return (<ConfirmDelete viewer={this.props.viewer}
+                           handleDelete={this.handleDelete}
+                           ref="confirmDelete" />);
   }
 }
 
@@ -84,7 +45,8 @@ export default Relay.createContainer(CommentDelete, {
     `,
     viewer: () => Relay.QL`
       fragment on Query {
-        id
+        id,
+        ${ConfirmDelete.getFragment('viewer')},
       }
     `,
   },
