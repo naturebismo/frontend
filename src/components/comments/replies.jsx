@@ -6,9 +6,7 @@ import CommentItem from './item';
 import CommentCreate from '../comments/add';
 
 class CommentsReplies extends React.Component {
-  handleHideReplyForm = () => {
-    this.props.relay.setVariables({replyFormExpanded: false});
-  }
+  state = {}
 
   handleReplyFocus = (input) => {
     input.focus();
@@ -29,7 +27,7 @@ class CommentsReplies extends React.Component {
     }
 
     var comments_rendered;
-    if(this.props.relay.variables.expanded) {
+    if(this.props.expanded) {
       comments_rendered = comments.edges.map(function(edge, i){
         var comment = edge.node;
         return (
@@ -42,10 +40,10 @@ class CommentsReplies extends React.Component {
     }
 
     var replyForm;
-    if(this.props.relay.variables.replyFormExpanded) {
+    if(this.props.replyFormExpanded) {
       replyForm = (<CommentCreate viewer={this.props.viewer} commenting={this.props.commenting}
-        onShown={this.props.handleReplyFocus}
-        onSuccess={this.handleHideReplyForm} />);
+        onShown={this.handleReplyFocus}
+        onSuccess={this.props.handleHideReplyForm} />);
     }
 
     return (
@@ -59,12 +57,8 @@ class CommentsReplies extends React.Component {
 }
 
 export default Relay.createContainer(CommentsReplies, {
-  initialVariables: {
-    replyFormExpanded: false,
-    expanded: false
-  },
   fragments: {
-    commenting: (variables) => Relay.QL`
+    commenting: () => Relay.QL`
       fragment on Commenting {
         count,
         comments(first: 50) {
@@ -79,7 +73,7 @@ export default Relay.createContainer(CommentsReplies, {
         ${CommentItem.getFragment('commenting')},
       }
     `,
-    viewer: (variables) => Relay.QL`
+    viewer: () => Relay.QL`
       fragment on Query {
         id,
         me {

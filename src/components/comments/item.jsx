@@ -129,6 +129,7 @@ class CommentItem extends React.Component {
             expanded={this.props.relay.variables.expanded} 
             replyFormExpanded={this.state.replyFormExpanded} 
             handleToggleReplies={this.handleToggleReplies}
+            handleHideReplyForm={this.handleHideReplyForm}
           />
         </Media.Body>
       </Media>
@@ -164,7 +165,7 @@ export default Relay.createContainer(CommentItem, {
         commenting {
           count
           ${CommentCreate.getFragment('commenting')},
-          ${CommentsReplies.getFragment('commenting').if(variables.expanded)},
+          ${CommentsReplies.getFragment('commenting', {}).if(variables.expanded)},
         },
         ${CommentEdit.getFragment('comment')},
         ${CommentDelete.getFragment('comment')},
@@ -186,7 +187,7 @@ export default Relay.createContainer(CommentItem, {
         ${CommentCreate.getFragment('viewer')},
         ${CommentDelete.getFragment('viewer')},
         ${VotingButtons.getFragment('viewer')},
-        ${CommentsReplies.getFragment('viewer').if(variables.expanded)},
+        ${CommentsReplies.getFragment('viewer', {}).if(variables.expanded)},
       }
     `,
   },
