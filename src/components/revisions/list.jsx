@@ -5,18 +5,7 @@ import Helmet from 'react-helmet';
 import { Table } from "react-bootstrap";
 
 import ProfileLink from '../accounts/ProfileLink';
-
-import {
-    injectIntl,
-    FormattedRelative,
-} from 'react-intl';
-
-const PostDate = injectIntl(({date, intl}) => (
-    <span title={intl.formatDate(date)}>
-        <FormattedRelative value={date}/>
-    </span>
-));
-
+import RelativeDate from '../nodes/relativeDate';
 
 const pageSize = 30;
 
@@ -58,7 +47,7 @@ class RevisionsList extends React.Component {
             return (<tr key={i}>
                 <td><Link to={`/revisions/revision/${revision.id}`}>{revision.id}</Link> {current}</td>
                 <td><ProfileLink user={revision.author} /></td>
-                <td><PostDate date={revision.createdAt} /></td>
+                <td><RelativeDate date={revision.createdAt} /></td>
               </tr>);
           })}
         </tbody>

@@ -10,17 +10,7 @@ import ProfileLink from '../accounts/ProfileLink';
 import VotingButtons from '../voting/buttons';
 import CommentsList from '../comments/list';
 import PostDelete from './PostDelete';
-
-import {
-    injectIntl,
-    FormattedRelative,
-} from 'react-intl';
-
-const PostDate = injectIntl(({date, intl}) => (
-    <span title={intl.formatDate(date)}>
-        <FormattedRelative value={date}/>
-    </span>
-));
+import RelativeDate from '../nodes/relativeDate';
 
 var markdownOptions = {
   html: false,
@@ -68,7 +58,7 @@ class Post extends React.Component {
               return (<span key={tag.id}><Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link> </span>);
             })}</p>
             Enviada por <ProfileLink user={post.revisionCreated.author} /> <i className="fa fa-clock-o"
-              aria-hidden="true"></i> <PostDate date={post.publishedAt} /><span> . </span>
+              aria-hidden="true"></i> <RelativeDate date={post.publishedAt} /><span> . </span>
             <Link to={`/revisions/${post.id}`}>{post.document.revisionsCount} alterações</Link><span> . </span>
             {postEditorActions}
           </div>

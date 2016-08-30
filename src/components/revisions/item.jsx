@@ -9,18 +9,7 @@ import LoginRequired from '../accounts/LoginRequired';
 import ProfileLink from '../accounts/ProfileLink';
 import {markdownOptions} from "../blog/Post";
 import RevisionRevertMutation from './RevisionRevert.mutation';
-
-
-import {
-    injectIntl,
-    FormattedRelative,
-} from 'react-intl';
-
-const PostDate = injectIntl(({date, intl}) => (
-    <span title={intl.formatDate(date)}>
-        <FormattedRelative value={date}/>
-    </span>
-));
+import RelativeDate from '../nodes/relativeDate';
 
 class RevisionItem extends React.Component {
   state = {}
@@ -59,7 +48,7 @@ class RevisionItem extends React.Component {
             return (<Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link>);
           })}<br/>
           
-          <i className="fa fa-clock-o" aria-hidden="true"></i> <PostDate date={post.publishedAt} />
+          <i className="fa fa-clock-o" aria-hidden="true"></i> <RelativeDate date={post.publishedAt} />
         </div>
 
         <div id="postBody">
@@ -76,7 +65,7 @@ class RevisionItem extends React.Component {
           <h1 style={{marginTop: 0}}>Comentário: {comment.id}</h1>
           
           <ProfileLink user={comment.revisionCreated.author} /> . <i className="fa fa-clock-o"
-            aria-hidden="true"></i> <PostDate date={comment.revisionCreated.createdAt} />
+            aria-hidden="true"></i> <RelativeDate date={comment.revisionCreated.createdAt} />
         </div>
 
         <div id="postBody">
@@ -115,7 +104,7 @@ class RevisionItem extends React.Component {
     }
 
     return (<div>
-      <p>Alteração <strong>{revision.id}</strong> feita por <ProfileLink user={revision.author} /> <PostDate date={revision.createdAt} /></p>
+      <p>Alteração <strong>{revision.id}</strong> feita por <ProfileLink user={revision.author} /> <RelativeDate date={revision.createdAt} /></p>
 
       {after}
       {before}

@@ -4,20 +4,11 @@ import ReactList from "react-list";
 import { Link } from 'react-router';
 import { Badge } from "react-bootstrap";
 import Helmet from 'react-helmet';
-import {
-    injectIntl,
-    FormattedRelative,
-} from 'react-intl';
 
+import RelativeDate from './nodes/relativeDate';
 import ProfileLink from './accounts/ProfileLink';
 
 const pageSize = 30;
-
-const PostDate = injectIntl(({date, intl}) => (
-    <span title={intl.formatDate(date)}>
-        <FormattedRelative value={date}/>
-    </span>
-));
 
 class Home extends React.Component {
   constructor(props){
@@ -35,7 +26,7 @@ class Home extends React.Component {
           var tag = edge.node;
           return (<Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link>);
         })}<br/>
-        <a href="#">{post.voting.countUps} gostaram</a> . <a href="#">{post.voting.countDowns} não gostaram</a> . <a href="#">{ post.commenting.count } comentarios</a> . enviada por <ProfileLink user={post.revisionCreated.author} /> <PostDate date={post.publishedAt} />
+        <a href="#">{post.voting.countUps} gostaram</a> . <a href="#">{post.voting.countDowns} não gostaram</a> . <a href="#">{ post.commenting.count } comentarios</a> . enviada por <ProfileLink user={post.revisionCreated.author} /> <RelativeDate date={post.publishedAt} />
       </div>
     );
   }

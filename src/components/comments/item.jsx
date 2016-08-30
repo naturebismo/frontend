@@ -12,18 +12,7 @@ import CommentDelete from './delete';
 import CommentsReplies from './replies';
 
 import {markdownOptions} from "../blog/Post";
-
-import {
-    injectIntl,
-    FormattedRelative,
-} from 'react-intl';
-
-const PostDate = injectIntl(({date, intl}) => (
-    <span title={intl.formatDate(date)}>
-        <FormattedRelative value={date}/>
-    </span>
-));
-
+import RelativeDate from '../nodes/relativeDate';
 
 class CommentItem extends React.Component {
   state = {replyFormExpanded: false, editing: false}
@@ -118,7 +107,7 @@ class CommentItem extends React.Component {
         <Media.Body>
           <Media.Heading>
             <ProfileLink user={comment.revisionCreated.author} /> . <small><i className="fa fa-clock-o"
-              aria-hidden="true"></i> <PostDate date={comment.revisionCreated.createdAt} /></small>
+              aria-hidden="true"></i> <RelativeDate date={comment.revisionCreated.createdAt} /></small>
           </Media.Heading>
           
           {commentBody}
