@@ -7,16 +7,25 @@ import Helmet from 'react-helmet';
 import {FormattedMessage} from 'react-intl';
 import { Col } from "react-bootstrap";
 
-import {
-    injectIntl,
-    FormattedRelative,
-} from 'react-intl';
+import RelativeDate from '../nodes/relativeDate';
 
-const ProfileDate = injectIntl(({date, intl}) => (
-    <span title={intl.formatDate(date)}>
-        <FormattedRelative value={date}/>
-    </span>
-));
+function renderAction(action) {
+  var icon_class;
+  if(action.type == "create") {
+    icon_class = "fa-plus";
+  }
+  if(action.type == "change") {
+    icon_class = "fa-pencil";
+  }
+  if(action.type == "delete") {
+    icon_class = "fa-trash";
+  }
+
+  return (<div key={action.id}>
+    <i className={`fa ${icon_class}`} aria-hidden="true"></i> {action.type} -> <Link to={`/revisions/revision/${action.id}`}>
+    {action.object.__typename}:{action.object.id}</Link> | <i className="fa fa-clock-o" aria-hidden="true"></i> <RelativeDate date={action.createdAt} />
+  </div>);
+}
 
 class Profile extends React.Component {
   render() {
@@ -38,10 +47,7 @@ class Profile extends React.Component {
 
           <h2>Últimas atividades</h2>
           {user.actions.edges.map(function(edge, i){
-            var action = edge.node;
-            return (<div>
-              {action.type} -> {action.object.__typename}:{action.object.id} | <ProfileDate date={action.createdAt} />
-            </div>);
+            return renderAction(edge.node);
           })}
         </Col>
       </div>
@@ -59,7 +65,7 @@ export default Relay.createContainer(Profile, {
         avatar {
           x140x140
         }
-        actions(first: 10) {
+        actions(first: 200) {
           edges {
             node {
               id
