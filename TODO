@@ -1,4 +1,7 @@
 * usar ID's numericos apenas, e não esses base64 incluindo o nome do tipo do Node, o backend não precisa disso
 * default image to user avatar
 * [React Intl] Error formatting relative time.
-RangeError: The date value provided to IntlRelativeFormat#format() is not in valid range.
+* paginação
+* adicionar permissões do arquivo : privado, convidados, publico
+* quem pode editar: todos que podem acessar, privado, convidados
+# assinar por atualizações (novos comentários, alterações, votos)

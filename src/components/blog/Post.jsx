@@ -19,6 +19,10 @@ var markdownOptions = {
 class Post extends React.Component {
   render() {
     var post = this.props.post;
+    if(!post) {
+      return (<div>Não encontrado</div>);
+    }
+
     var publishedAt = new Date(post.publishedAt);
     var publishedAt_str = publishedAt.toDateString() + ' ' + publishedAt.toTimeString();
 
