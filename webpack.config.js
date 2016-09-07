@@ -4,9 +4,9 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-var Dashboard = require('webpack-dashboard');
-var DashboardPlugin = require('webpack-dashboard/plugin');
-var dashboard = new Dashboard();
+// var Dashboard = require('webpack-dashboard');
+// var DashboardPlugin = require('webpack-dashboard/plugin');
+// var dashboard = new Dashboard();
 
 const pkg = require('./package.json');
 
@@ -16,7 +16,11 @@ const PATHS = {
   build: path.join(__dirname, 'build'),
 };
 
-const GRAPHQL_PORT = 9090;
+const PORT = process.env.PORT || 8080;
+const HOST = process.env.HOST || 'localhost';
+
+const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 9090;
+const GRAPHQL_HOST = process.env.GRAPHQL_HOST || 'localhost';
 
 process.env.BABEL_ENV = TARGET;
 
@@ -54,7 +58,7 @@ const common = {
       appMountId: 'root',
       inject: false
     }),
-    new DashboardPlugin(dashboard.setData)
+    // new DashboardPlugin(dashboard.setData)
   ]
 };
 
@@ -74,8 +78,8 @@ if(TARGET === 'start' || !TARGET) {
       port: process.env.PORT,
 
       proxy: {
-        '/graphql': `http://localhost:${GRAPHQL_PORT}`,
-        '/public/*': `http://localhost:${GRAPHQL_PORT}`,
+        '/graphql': `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`,
+        '/public/*': `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`,
       },
       stats: {colors: true},
     },
@@ -125,9 +129,9 @@ if(TARGET === 'build' || TARGET === 'stats') {
       // Output extracted CSS to a file
       new ExtractTextPlugin('[name].[chunkhash].css'),
       // Extract vendor and manifest files
-      new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendor', 'manifest']
-      }),
+      // new webpack.optimize.CommonsChunkPlugin({
+      //   names: ['vendor', 'manifest']
+      // }),
       // Setting DefinePlugin affects React library size!
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"production"'
