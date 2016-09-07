@@ -6,7 +6,8 @@
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/webpack-dev-server"
+    "start": "./node_modules/.bin/webpack-dev-server",
+    "build": "./node_modules/.bin/webpack -p"
   },
   "dependencies": {
     "classnames": "^2.2.3",
