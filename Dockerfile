@@ -9,7 +9,5 @@ ENV PATH /app/node_modules/.bin:$PATH
 RUN mkdir /app/build
 VOLUME /app
 VOLUME /app/build
-RUN wget http://naturebismo.com/public/schema.json
-RUN npm_lifecycle_event=build NODE_ENV=production webpack -p
 RUN chmod +x /app/docker-entrypoint.sh
 CMD ["/app/docker-entrypoint.sh"]
