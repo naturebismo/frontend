@@ -11,6 +11,7 @@ import useRelay from 'react-router-relay';
 import { useRouterHistory, match, Router } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import routes from './routes';
+import IsomorphicRelay from 'isomorphic-relay';
 import IsomorphicRouter from 'isomorphic-relay-router';
 import injectNetworkLayer from './components/injectNetworkLayer';
 

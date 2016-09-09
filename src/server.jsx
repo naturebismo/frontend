@@ -24,5 +24,5 @@ app.get('*', (req, res, next) => {
 });
 
 app.listen(PORT, HOST, () => {
-    console.log(`App is now running on http://localhost:${PORT}`);
+    console.log(`App is now running on http://${HOST}:${PORT}`);
 });
