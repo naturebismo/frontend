@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+var WebpackMd5Hash = require('webpack-md5-hash');
 // var Dashboard = require('webpack-dashboard');
 // var DashboardPlugin = require('webpack-dashboard/plugin');
 // var dashboard = new Dashboard();
@@ -58,6 +59,25 @@ const common = {
       appMountId: 'root',
       inject: false
     }),
+    new HtmlWebpackPlugin({
+      template: 'html!./src/index.ejs',
+      filename: path.resolve(process.cwd(), 'build', 'views', 'index.ejs'),
+      appMountId: 'root',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      },
+    }),
+
     // new DashboardPlugin(dashboard.setData)
   ]
 };
@@ -112,7 +132,7 @@ if(TARGET === 'build' || TARGET === 'stats') {
     output: {
       path: PATHS.build,
       filename: '[name].[chunkhash].js',
-      chunkFilename: '[chunkhash].js'
+      chunkFilename: '[name].[chunkhash].chunk.js',
     },
     module: {
       loaders: [
@@ -125,22 +145,42 @@ if(TARGET === 'build' || TARGET === 'stats') {
       ]
     },
     plugins: [
-      // new CleanPlugin([PATHS.build]),
+      // Remove build folder
+      new CleanPlugin([PATHS.build]),
+
+      // User's MD5 as chunkhash
+      new WebpackMd5Hash(),
+
       // Output extracted CSS to a file
       new ExtractTextPlugin('[name].[chunkhash].css'),
+
       // Extract vendor and manifest files
       // new webpack.optimize.CommonsChunkPlugin({
       //   names: ['vendor', 'manifest']
       // }),
+
       // Setting DefinePlugin affects React library size!
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"production"'
       }),
+
+      // Set the process.env to production so React includes the production
+      // version of itself.
+      new webpack.DefinePlugin({
+        __CLIENT__: true,
+        __SERVER__: false,
+        __DEVELOPMENT__: false,
+        __PRODUCTION__: true,
+      }),
+
+      // Merge all duplicate modules.
+      new webpack.optimize.DedupePlugin(),
+
       new webpack.optimize.UglifyJsPlugin({
         compress: {
           warnings: false
         }
-      })
+      }),
     ]
   });
 }

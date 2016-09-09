@@ -6,8 +6,10 @@ WORKDIR /app
 ENV NODE_ENV development
 RUN npm install
 ENV PATH /app/node_modules/.bin:$PATH
-RUN mkdir /app/build
-VOLUME /app
-VOLUME /app/build
-RUN chmod +x /app/docker-entrypoint.sh
-CMD ["/app/docker-entrypoint.sh"]
+ADD http://naturebismo.com/public/schema.json /app/schema.json
+
+# We need to force production to build it.
+RUN NODE_ENV=production npm run build
+
+WORKDIR /app/build
+CMD ["node", "server.js"]

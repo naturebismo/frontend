@@ -1,14 +1,8 @@
 import Relay from 'react-relay';
 
-const GRAPHQL_URL = '/graphql';
-
-export default function injectNetworkLayer() {
-    var networkLayer = new Relay.DefaultNetworkLayer(GRAPHQL_URL, {
+export default function injectNetworkLayer(graphql_url) {
+    var networkLayer = new Relay.DefaultNetworkLayer(graphql_url, {
         credentials: 'same-origin',
-        // headers: {
-        //   Authorization: 'Bearer ' + token
-        // }
     });
-   //  Relay.injectNetworkLayer(networkLayer);
     return networkLayer;
 };

@@ -1,0 +1,12 @@
+<!doctype html>
+<html<%- htmlAttributes %>>
+<head>
+    <%- htmlHead %>
+</head>
+<body>
+    <div id="root"><%- reactOutput %></div>
+    <script id="preloadedData" type="application/json">
+        <%- JSON.stringify(preloadedData).replace(/\//g, '\\/') %>
+    </script>
+</body>
+</html>

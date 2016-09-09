@@ -3,12 +3,11 @@ import Relay from 'react-relay';
 import PostEditMutation from './PostEdit.mutation'
 import { FormGroup, FormControl, ControlLabel, HelpBlock, Button } from "react-bootstrap";
 import Helmet from 'react-helmet';
-import RichTextEditor from 'react-rte-image';
 
 
 class PostEdit extends React.Component {
   state = {url: '', title: '',
-           body: RichTextEditor.createEmptyValue(),
+           body: '',
            publishedAt: '', 'tags': ''};
 
   handleURLChange = (e) => {
@@ -61,7 +60,7 @@ class PostEdit extends React.Component {
       url: post.url,
       title: post.title,
       publishedAt: post.publishedAt,
-      body: RichTextEditor.createValueFromString(post.body, 'markdown'),
+      body: post.body,
       tags: tags.join(', ')
     });
   }
@@ -91,7 +90,7 @@ class PostEdit extends React.Component {
         
         <FormGroup controlId="formControlsTextarea">
           <ControlLabel>Body</ControlLabel>
-          <RichTextEditor
+          <textarea
             value={this.state.body}
             onChange={this.handleBodyChange}
           />

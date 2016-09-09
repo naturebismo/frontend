@@ -4,23 +4,12 @@ import parseUrl from 'parseurl';
 import fs from 'fs';
 import send from 'send';
 import path from 'path';
-import renderOnServer from './renderOnServer'
+import renderOnServer from './renderOnServer';
 
-const APP_PORT = 8080;
+const PORT = process.env.PORT || 8080;
+const HOST = process.env.HOST || 'localhost';
 
 var app = express();
-
-app.use('/graphql', proxy('localhost:9090', {
-  forwardPath: function(req, res) {
-    return '/graphql';
-  }
-}));
-
-app.use('/public', proxy('localhost:9090', {
-  forwardPath: function(req, res) {
-    return '/public';
-  }
-}));
 
 app.get('*', (req, res, next) => {
     var urlpath = parseUrl(req).pathname
@@ -34,15 +23,6 @@ app.get('*', (req, res, next) => {
     });
 });
 
-// app.use(require('webpack-dev-middleware')(compiler, {
-//   quiet: true,
-//   publicPath: config.output.publicPath,
-// }));
-
-// app.use(require('webpack-hot-middleware')(compiler, {
-//   log: () => {}
-// }));
-
-app.listen(APP_PORT, () => {
-    console.log(`App is now running on http://localhost:${APP_PORT}`);
+app.listen(PORT, HOST, () => {
+    console.log(`App is now running on http://localhost:${PORT}`);
 });
