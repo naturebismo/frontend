@@ -11,10 +11,12 @@ import Helmet from 'react-helmet';
 const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 9090;
 const GRAPHQL_HOST = process.env.GRAPHQL_HOST || 'localhost';
 
-const networkLayer = injectNetworkLayer(`http://${GRAPHQL_HOST}:${GRAPHQL_PORT}/graphql`);
+
 
 export default (req, res, next) => {
   match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+    var networkLayer = injectNetworkLayer(`http://${GRAPHQL_HOST}:${GRAPHQL_PORT}/graphql`, req);
+
     if (error) {
       next(error);
     } else if (redirectLocation) {
