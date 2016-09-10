@@ -18,7 +18,7 @@ class PostEdit extends React.Component {
     this.setState({title: e.target.value});
   }
 
-  handleBodyChange = (value) => {
+  handleBodyChange = (e) => {
     this.setState({body: e.target.value});
   }
 
