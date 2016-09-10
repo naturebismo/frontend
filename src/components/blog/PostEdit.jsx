@@ -19,7 +19,7 @@ class PostEdit extends React.Component {
   }
 
   handleBodyChange = (value) => {
-    this.setState({body: value});
+    this.setState({body: e.target.value});
   }
 
   handlePublishedAtChange = (e) => {
@@ -90,10 +90,8 @@ class PostEdit extends React.Component {
         
         <FormGroup controlId="formControlsTextarea">
           <ControlLabel>Body</ControlLabel>
-          <textarea
-            value={this.state.body}
-            onChange={this.handleBodyChange}
-          />
+          <FormControl componentClass="textarea" rows="20"
+              onChange={this.handleBodyChange} value={this.state.body} />
         </FormGroup>
 
         <FormGroup controlId="formControlsText">
