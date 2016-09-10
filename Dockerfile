@@ -1,4 +1,20 @@
 FROM node:6
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# set backend server locale to pt_BR since it's our primary language
+# thus react's server side rendered pages are rendered using pt_BR dates
+RUN apt-get update -qq && apt-get install -y locales -qq
+RUN echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
+RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+RUN locale-gen
+RUN dpkg-reconfigure locales
+ENV LC_ALL=pt_BR.UTF-8
+ENV LANG=pt_BR.UTF-8
+ENV LANGUAGE=pt_BR.UTF-8
+ENV LC_CTYPE=pt_BR.UTF-8
+ENV LC_COLLATE=pt_BR.UTF-8
+
 EXPOSE 8080
 RUN mkdir /app
 COPY . /app
