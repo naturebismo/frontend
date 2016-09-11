@@ -19,10 +19,7 @@ export default class PostEditMutation extends Relay.Mutation {
   getFatQuery() {
     return Relay.QL`
       fragment on PostEditPayload {
-        post,
-        viewer {
-          allPosts,
-        }
+        post
       }
     `;
   }
@@ -31,7 +28,6 @@ export default class PostEditMutation extends Relay.Mutation {
       {
         type: 'FIELDS_CHANGE',
         fieldIDs: {
-          viewer: this.props.viewer.id,
           post: this.props.post.id,
         },
       }
@@ -50,13 +46,11 @@ export default class PostEditMutation extends Relay.Mutation {
   getOptimisticResponse() {
     return {
       post: {
+        id: this.props.post.id,
         url: this.props.url,
-        text: this.props.text,
+        title: this.props.title,
         body: this.props.body,
         publishedAt: this.props.publishedAt,
-      },
-      viewer: {
-        id: this.props.viewer.id,
       },
     };
   }

@@ -8,7 +8,7 @@ import Helmet from 'react-helmet';
 class PostEdit extends React.Component {
   state = {url: '', title: '',
            body: '',
-           publishedAt: '', 'tags': ''};
+           publishedAt: '', 'tags': ''}
 
   handleURLChange = (e) => {
     this.setState({url: e.target.value});
@@ -43,7 +43,6 @@ class PostEdit extends React.Component {
           viewer: this.props.viewer}),
       {
         onSuccess: (response) => {
-          //this.context.router.push('/post/' + response.postCreate.post.url);
           this.context.router.push('/');
         },
       }
