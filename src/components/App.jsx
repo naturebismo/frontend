@@ -53,9 +53,13 @@ class App extends React.Component {
             <Navbar.Brand>
               <Link to={`/`} className="navbar-brand">Naturebismo</Link>
             </Navbar.Brand>
+
+            <Navbar.Toggle />
           </Navbar.Header>
 
-          <AccountNavbar viewer={this.props.viewer} />
+          <Navbar.Collapse>
+            <AccountNavbar viewer={this.props.viewer} />
+          </Navbar.Collapse>
         </Navbar>
 
         <div className="container">

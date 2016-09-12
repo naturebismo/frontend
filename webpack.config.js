@@ -57,7 +57,8 @@ const common = {
       template: 'node_modules/html-webpack-template/index.ejs',
       title: 'Naturebismo',
       appMountId: 'root',
-      inject: false
+      inject: false,
+      mobile: true,
     }),
     new HtmlWebpackPlugin({
       template: 'html!./src/index.ejs',
