@@ -73,12 +73,13 @@ class App extends React.Component {
             <br />
             <br />
             <div className="col-xs-6">
-              © 2016 Naturebismo versão <a href="#">a3f19e2</a>.
+              © 2016 Naturebismo.
             </div>
             <div className="col-xs-6 text-right">
-              <a href="#">Sobre</a><span> . </span>
-              <a href="#">Contribua</a><span> . </span>
-              <a href="#">Termos de Uso</a>
+              <Link to={`/o-que-e`}>O que é</Link><span> . </span>
+              <Link to={`/como-funciona`}>Como Funciona</Link><span> . </span>
+              <Link to={`/contribua`}>Contribua</Link><span> . </span>
+              <Link to={`/termos-de-uso`}>Termos de Uso</Link>
             </div>
             <br />
             <br />
