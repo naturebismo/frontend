@@ -27,7 +27,7 @@ class Tag extends React.Component {
     var post = posts[index].node;
     return (
       <div key={ key } className="list-group-item">
-        <Link to={`/blog/${post.url}`}>{ post.title }</Link> by <strong>{ post.revisionCreated.author.username }</strong> at <i>{ post.publishedAt }</i>
+        <Link to={`/${post.url}`}>{ post.title }</Link> by <strong>{ post.revisionCreated.author.username }</strong> at <i>{ post.publishedAt }</i>
       </div>
     );
   }

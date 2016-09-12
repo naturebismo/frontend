@@ -22,7 +22,7 @@ class Home extends React.Component {
     var post = posts[index].node;
     return (
       <div key={ key } className="list-group-item">
-        <Link to={`/blog/${post.url}`}>{ post.title }</Link> {post.tags.edges.map(function(edge, i){
+        <Link to={`/${post.url}`}>{ post.title }</Link> {post.tags.edges.map(function(edge, i){
           var tag = edge.node;
           return (<Link to={`/tag/${tag.slug}`} key={i} className="badge">{tag.title}</Link>);
         })}<br/>

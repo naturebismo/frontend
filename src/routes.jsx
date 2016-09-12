@@ -53,10 +53,6 @@ export default (
       path="blog/edit/:postID" component={PostEdit}
       queries={PostIDQueries} />
     <Route
-      path="blog/*" component={Post}
-      queries={PostQueries}
-      prepareParams={preparePostParams} />
-    <Route
       path="revisions/:nodeID" component={RevisionsList}
       queries={NodeIDQueries} />
     <Route
@@ -70,5 +66,11 @@ export default (
       queries={TagIDQueries} />
     <Route
       path="logout" component={Logout} />
+
+
+    <Route
+      path="*" component={Post}
+      queries={PostQueries}
+      prepareParams={preparePostParams} />
   </Route>
 );
