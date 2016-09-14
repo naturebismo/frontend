@@ -1,8 +1,9 @@
 import React from 'react';
 import Relay from 'react-relay';
-import { FormGroup, FormControl, ControlLabel, Button } from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import CommentCreateMutation from './CommentCreate.mutation';
 import LoginRequired from '../accounts/LoginRequired';
+import LoadingButton from '../forms/RelayLoadingButton';
 
 
 class CommentCreate extends React.Component {
@@ -12,24 +13,21 @@ class CommentCreate extends React.Component {
     this.setState({body: e.target.value});
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-
-    this.refs.loginRequired.refs.component.commitUpdate(
-      new CommentCreateMutation({
+  buildCommit = () => {
+    return {
+      commitUpdate: this.refs.loginRequired.refs.component.commitUpdate,
+      mutation: new CommentCreateMutation({
           body: this.state.body,
           commenting: this.props.commenting,
           viewer: this.props.viewer}),
-      {
-        onSuccess: (response) => {
-          this.setState({body: ''});
+      onSuccess: (response) => {
+        this.setState({body: ''});
 
-          if(typeof this.props.onSuccess !== 'undefined') {
-            this.props.onSuccess();
-          }
-        },
+        if(typeof this.props.onSuccess !== 'undefined') {
+          this.props.onSuccess();
+        }
       }
-    );
+    };
   }
 
   componentDidMount() {
@@ -40,7 +38,7 @@ class CommentCreate extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} className="list-group-item">
+      <form className="list-group-item">
         <FormGroup controlId="formControlsTextarea">
           <textarea rows="2" placeholder="Deixe seu comentário" className="form-control"
             onChange={this.handleBodyChange}
@@ -49,7 +47,13 @@ class CommentCreate extends React.Component {
           />
         </FormGroup>
 
-        <Button type="submit">enviar comentário</Button>
+        <LoadingButton
+          type="submit"
+          buildCommit={this.buildCommit}
+          loadingText="enviando ..."
+        >
+          enviar comentário
+        </LoadingButton>
 
         <LoginRequired viewer={this.props.viewer} ref="loginRequired" showMessage={true} />
       </form>

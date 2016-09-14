@@ -1,8 +1,9 @@
 import React from 'react';
 import Relay from 'react-relay';
-import { FormGroup, FormControl, ControlLabel, Button } from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import CommentEditMutation from './CommentEdit.mutation';
 import LoginRequired from '../accounts/LoginRequired';
+import LoadingButton from '../forms/RelayLoadingButton';
 
 
 class CommentEdit extends React.Component {
@@ -12,22 +13,19 @@ class CommentEdit extends React.Component {
     this.setState({body: e.target.value});
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-
-    this.refs.loginRequired.refs.component.commitUpdate(
-      new CommentEditMutation({
+  buildCommit = () => {
+    return {
+      commitUpdate: this.refs.loginRequired.refs.component.commitUpdate,
+      mutation: new CommentEditMutation({
           body: this.state.body,
           comment: this.props.comment,
           viewer: this.props.viewer}),
-      {
-        onSuccess: (response) => {
-          if(typeof this.props.onSuccess !== 'undefined') {
-            this.props.onSuccess();
-          }
-        },
+      onSuccess: (response) => {
+        if(typeof this.props.onSuccess !== 'undefined') {
+          this.props.onSuccess();
+        }
       }
-    );
+    };
   }
 
   componentWillMount() {
@@ -51,7 +49,13 @@ class CommentEdit extends React.Component {
           />
         </FormGroup>
 
-        <Button type="submit">salvar alteração</Button>
+        <LoadingButton
+          type="submit"
+          buildCommit={this.buildCommit}
+          loadingText="salvando ..."
+        >
+          salvar alteração
+        </LoadingButton>
 
         <LoginRequired viewer={this.props.viewer} ref="loginRequired" showMessage={true} />
       </form>
