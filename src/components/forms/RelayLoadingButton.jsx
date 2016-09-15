@@ -58,8 +58,7 @@ export default class LoadingButton extends React.Component {
       }
 
       currentChildren = (<span>
-        <i className="fa fa-spinner fa-spin fa-fw"></i> <span
-        className="sr-only">carregando...</span> {loadingTextRender}
+        <i className="fa fa-spinner fa-spin fa-fw"></i> {loadingTextRender}
       </span>);
     } else {
       currentChildren = (this.props.children);

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
+import loadingRender from './routeLoadingRender';
+
 import ViewerQueries from './components/Viewer.queries';
 
 import App from './components/App';
@@ -40,37 +42,62 @@ export default (
     path="/" component={App}
     queries={ViewerQueries}
   >
-    <IndexRoute component={Home} queries={ViewerQueries} />
+    <IndexRoute component={Home} queries={ViewerQueries} render={loadingRender} />
     <Route
-      path="u/:username" component={Profile} queries={ProfileQueries} />
+      path="u/:username"
+        component={Profile}
+        queries={ProfileQueries}
+        render={loadingRender} />
     <Route
-      path="me/edit" component={ProfileEdit} queries={ViewerQueries} />
+      path="me/edit"
+        component={ProfileEdit}
+        queries={ViewerQueries}
+        render={loadingRender} />
     <Route
-      path="plant" component={Plant} queries={ViewerQueries} />
+      path="plant"
+        component={Plant}
+        queries={ViewerQueries}
+        render={loadingRender} />
     <Route
-      path="blog/new" component={PostCreate} queries={ViewerQueries} />
+      path="blog/new"
+        component={PostCreate}
+        queries={ViewerQueries}
+        render={loadingRender} />
     <Route
-      path="blog/edit/:postID" component={PostEdit}
-      queries={PostIDQueries} />
+      path="blog/edit/:postID"
+        component={PostEdit}
+        queries={PostIDQueries}
+        render={loadingRender} />
     <Route
-      path="revisions/:nodeID" component={RevisionsList}
-      queries={NodeIDQueries} />
+      path="revisions/:nodeID"
+        component={RevisionsList}
+        queries={NodeIDQueries}
+        render={loadingRender} />
     <Route
-      path="revisions/revision/:revisionID" component={RevisionItem}
-      queries={RevisionIDQueries} />
+      path="revisions/revision/:revisionID"
+        component={RevisionItem}
+        queries={RevisionIDQueries}
+        render={loadingRender} />
     <Route
-      path="tag/:tagSlug" component={Tag}
-      queries={TagSlugQueries} />
+      path="tag/:tagSlug"
+        component={Tag}
+        queries={TagSlugQueries}
+        render={loadingRender} />
     <Route
-      path="tag/edit/:tagID" component={TagEdit}
-      queries={TagIDQueries} />
+      path="tag/edit/:tagID"
+        component={TagEdit}
+        queries={TagIDQueries}
+        render={loadingRender} />
     <Route
-      path="logout" component={Logout} />
+      path="logout"
+        component={Logout}
+        render={loadingRender} />
 
-
     <Route
-      path="*" component={Post}
-      queries={PostQueries}
-      prepareParams={preparePostParams} />
+      path="*"
+        component={Post}
+        queries={PostQueries}
+        prepareParams={preparePostParams}
+        render={loadingRender} />
   </Route>
 );
