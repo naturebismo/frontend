@@ -8,8 +8,9 @@ import {FormattedMessage} from 'react-intl';
 import { Col } from "react-bootstrap";
 
 import RelativeDate from '../nodes/relativeDate';
+import CommentAction from '../comments/asUserAction';
 
-function renderAction(action) {
+function renderAction(action, viewer) {
   var icon_class;
   if(action.type == "create") {
     icon_class = "fa-plus";
@@ -21,15 +22,22 @@ function renderAction(action) {
     icon_class = "fa-trash";
   }
 
+  var objRendered;
+  if(action.object.__typename == 'Comment') {
+    objRendered = (<CommentAction comment={action.object} viewer={viewer} />);
+  }
+
   return (<div key={action.id}>
     <i className={`fa ${icon_class}`} aria-hidden="true"></i> {action.type} -> <Link to={`/revisions/revision/${action.id}`}>
     {action.object.__typename}:{action.object.id}</Link> | <i className="fa fa-clock-o" aria-hidden="true"></i> <RelativeDate date={action.createdAt} />
+    {objRendered}
   </div>);
 }
 
 class Profile extends React.Component {
   render() {
     var user = this.props.user;
+    var viewer = this.props.viewer;
     
     return (
       <div className="profile-component">
@@ -47,7 +55,7 @@ class Profile extends React.Component {
 
           <h2>Últimas atividades</h2>
           {user.actions.edges.map(function(edge, i){
-            return renderAction(edge.node);
+            return renderAction(edge.node, viewer);
           })}
         </Col>
       </div>
@@ -81,6 +89,7 @@ export default Relay.createContainer(Profile, {
                 
                 ... on Comment {
                   body
+                  ${CommentAction.getFragment('comment')},
                 }
               }
             }
@@ -90,7 +99,8 @@ export default Relay.createContainer(Profile, {
     `,
     viewer: () => Relay.QL`
       fragment on Query {
-        id
+        id,
+        ${CommentAction.getFragment('viewer')},
       }
     `,
   },
