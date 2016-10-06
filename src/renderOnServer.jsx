@@ -37,7 +37,17 @@ export default (req, res, next) => {
       const htmlHead = headOrder.map((key) => helmetOutput[key].toString().trim()).join('');
       const htmlAttributes = helmetOutput.htmlAttributes.toString();
 
-      res.render(path.resolve(__dirname, 'views', 'index.ejs'), {
+      // workaround to figure out what HTTP status code to return using Helmet
+      var statusCode = 200;
+      var metas = helmetOutput.meta.toComponent();
+      for(var i=0; i<metas.length; i++) {
+        let meta = metas[i];
+        if(typeof meta.props !== 'undefined' && meta.props.name == 'status'){
+          statusCode = parseInt(meta.props.content);
+        }
+      }
+
+      res.status(statusCode).render(path.resolve(__dirname, 'views', 'index.ejs'), {
         preloadedData: data,
         reactOutput,
         htmlHead,

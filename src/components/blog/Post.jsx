@@ -20,7 +20,16 @@ class Post extends React.Component {
   render() {
     var post = this.props.post;
     if(!post) {
-      return (<div>Não encontrado</div>);
+      return (<div>
+        <Helmet
+          title="Não encontrado"
+          meta={[
+              {"name": "status", "content": "404"}
+          ]}
+        />
+
+        Não encontrado
+      </div>);
     }
 
     var publishedAt = new Date(post.publishedAt);
