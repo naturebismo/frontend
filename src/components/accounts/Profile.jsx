@@ -50,7 +50,7 @@ class Profile extends React.Component {
         </Col>
         <Col sm={10}>
           <div className="page-header" style={{marginTop: 0}}>
-              <h1 style={{marginTop: 0}}>{user.username}</h1>
+              <h1 style={{marginTop: 0}}>{user.username} <small>({user.reputation})</small></h1>
           </div>
 
           <h2>Últimas atividades</h2>
@@ -70,6 +70,7 @@ export default Relay.createContainer(Profile, {
         id,
         username
         firstName
+        reputation
         avatar {
           x140x140
         }
