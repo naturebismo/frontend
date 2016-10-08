@@ -1,10 +1,21 @@
 import React from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
+import { OverlayTrigger, Popover } from "react-bootstrap";
 
 class ProfileLink extends React.Component {
   render() {
-    return (<Link to={`/u/${this.props.user.username}`}>{this.props.user.username}</Link>);
+    var user = this.props.user;
+    var popover = (<Popover id={`profile_link_${user.id}`}>
+      <div className="clearfix">
+        <img src={user.avatar.x140x140} width="40" className="pull-left" style={{marginRight: '10px'}} />
+        <strong>{user.firstName}</strong><br/>
+        Reputação: {user.reputation}
+      </div>
+    </Popover>);
+    return (<OverlayTrigger placement="bottom" overlay={popover}>
+      <Link to={`/u/${user.username}`}>{user.username}</Link>
+    </OverlayTrigger>);
   }
 }
 
@@ -14,6 +25,11 @@ export default Relay.createContainer(ProfileLink, {
       fragment on User {
         id,
         username,
+        firstName
+        reputation
+        avatar {
+          x140x140
+        }
       }
     `,
   },
