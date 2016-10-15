@@ -28,7 +28,7 @@ class Plant extends React.Component {
     }
     
     return (
-      <div className="profile-component">
+      <div className="col-xs-12">
         <Helmet
           title={plant.name}
         />

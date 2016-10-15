@@ -103,7 +103,7 @@ class RevisionItem extends React.Component {
       </p>);
     }
 
-    return (<div>
+    return (<div className="col-xs-12">
       <p>Alteração <strong>{revision.id}</strong> feita por <ProfileLink user={revision.author} /> <RelativeDate date={revision.createdAt} /></p>
 
       {after}

@@ -65,12 +65,12 @@ class PostEdit extends React.Component {
   }
 
   render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <Helmet
-          title={`Editing: ${this.props.post.title}`}
-        />
+    return (<div className="col-xs-12">
+      <Helmet
+        title={`Editando: ${this.props.post.title}`}
+      />
         
+      <form onSubmit={this.handleSubmit}>
         <FormGroup controlId="formControlsText">
           <ControlLabel>URL</ControlLabel>
           <FormControl type="text" value={this.state.url} onChange={this.handleURLChange} />
@@ -100,7 +100,7 @@ class PostEdit extends React.Component {
 
         <Button type="submit">Save changes</Button>
       </form>
-    );
+    </div>);
   }
 }
 

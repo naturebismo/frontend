@@ -48,7 +48,7 @@ class TagEdit extends React.Component {
   }
 
   render() {
-    return (
+    return (<div className="col-xs-12">
       <form onSubmit={this.handleSubmit}>
         <Helmet
           title={`Editing: ${this.props.tag.title}`}
@@ -71,7 +71,7 @@ class TagEdit extends React.Component {
 
         <Button type="submit">Save changes</Button>
       </form>
-    );
+    </div>);
   }
 }
 

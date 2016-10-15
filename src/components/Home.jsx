@@ -34,7 +34,7 @@ class Home extends React.Component {
   render() {
     var allPosts = this.props.viewer.allPosts;
     return (
-      <div>
+      <div className="col-xs-12">
         <Helmet 
           title="Naturebismo"
           titleTemplate="%s"

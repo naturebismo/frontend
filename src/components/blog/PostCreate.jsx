@@ -48,7 +48,7 @@ class PostCreate extends React.Component {
   }
 
   render() {
-    return (
+    return (<div className="col-xs-12">
       <form onSubmit={this.handleSubmit}>
         <Helmet
           title="Write new Post"
@@ -82,7 +82,7 @@ class PostCreate extends React.Component {
 
         <Button type="submit">Save</Button>
       </form>
-    );
+    </div>);
   }
 }
 

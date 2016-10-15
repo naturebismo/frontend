@@ -15,7 +15,9 @@ class LoadingMessage extends React.Component {
   }
 
   render() {
-    return (<div><i className="fa fa-spinner fa-spin fa-fw"></i> carregando {this.state.periods}</div>);
+    return (<div className="col-xs-12">
+      <i className="fa fa-spinner fa-spin fa-fw"></i> carregando {this.state.periods}
+    </div>);
   }
 }
 

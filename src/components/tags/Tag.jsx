@@ -43,12 +43,12 @@ class Tag extends React.Component {
       }
     }
 
-    return (<div>
+    return (<div className="col-xs-12">
       <Helmet
         title={tag.title}
       />
-      <div className="page-header">
-        <h1>{tag.title}</h1>
+      <div className="page-header" style={{marginTop: 0}}>
+        <h1 style={{marginTop: 0}}>{tag.title}</h1>
       </div>
 
       <div>{tag.description}</div>

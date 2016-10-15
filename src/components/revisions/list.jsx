@@ -22,7 +22,7 @@ class RevisionsList extends React.Component {
       var title = "Comentário " + node.id;
     }
 
-    return (<div>
+    return (<div className="col-xs-12">
       <h1>{`Historico de alterações: ${title}`}</h1>
       <Table responsive>
         <Helmet

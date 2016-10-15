@@ -65,7 +65,7 @@ class ProfileEdit extends React.Component {
     }
     
     return (
-      <div className="profile-component">
+      <div className="col-xs-12">
         <Helmet
           title="Editar perfil"
         />

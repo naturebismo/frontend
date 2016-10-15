@@ -5,10 +5,12 @@ import Markdown from 'react-remarkable';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import {FormattedMessage} from 'react-intl';
-import { Col } from "react-bootstrap";
+import { Col, Button } from "react-bootstrap";
 
 import RelativeDate from '../nodes/relativeDate';
 import CommentAction from '../comments/asUserAction';
+
+const pageSize = 10;
 
 function renderAction(action, viewer) {
   var icon_class;
@@ -35,6 +37,13 @@ function renderAction(action, viewer) {
 }
 
 class Profile extends React.Component {
+  state = {}
+
+  loadMore = (e) => {
+    e.preventDefault();
+    this.props.relay.setVariables({pageSize: this.props.relay.variables.pageSize + pageSize});
+  }
+
   render() {
     var user = this.props.user;
     var viewer = this.props.viewer;
@@ -57,6 +66,8 @@ class Profile extends React.Component {
           {user.actions.edges.map(function(edge, i){
             return renderAction(edge.node, viewer);
           })}
+
+          <Button type="submit" onClick={this.loadMore}>Carregar mais</Button>
         </Col>
       </div>
     );
@@ -64,6 +75,9 @@ class Profile extends React.Component {
 }
 
 export default Relay.createContainer(Profile, {
+  initialVariables: {
+    pageSize: pageSize
+  },
   fragments: {
     user: () => Relay.QL`
       fragment on User {
@@ -74,7 +88,7 @@ export default Relay.createContainer(Profile, {
         avatar {
           x140x140
         }
-        actions(first: 200) {
+        actions(first: $pageSize) {
           edges {
             node {
               id
