@@ -9,33 +9,26 @@ export default class LoadingButton extends React.Component {
   handleOnClick = (e) => {
     e.preventDefault();
 
-    this.setState({isLoading: true});
+    this.setState({isLoading: true, error: false});
 
-    var commit = this.props.buildCommit();
+    var parent = this.props.getSetVariables();
 
-    var commitUpdateFn;
-    if(typeof commit.commitUpdate === 'function') {
-      commitUpdateFn = commit.commitUpdate;
-    } else {
-      commitUpdateFn = Relay.Store.commitUpdate;
-    }
+    parent.relay.setVariables(parent.variables, readyState => {
+      if (readyState.done || readyState.aborted) {
+        this.setState({isLoading: false});
 
-    commitUpdateFn(commit.mutation, {
-      onSuccess: (response) => {
-        this.setState({error: false, isLoading: false});
-
-        if(typeof commit.onSuccess === 'function') {
-          commit.onSuccess(response);
+        if(typeof parent.onSuccess === 'function') {
+          parent.onSuccess(readyState);
         }
-      },
-      onFailure: (transaction) => {
-        this.setState({error: true, isLoading: false});
 
-        if(typeof commit.onFailure === 'function') {
-          commit.onFailure(transaction);
+      } else if (readyState.error) {
+        this.setState({isLoading: false, error: true});
+
+        if(typeof parent.onFailure === 'function') {
+          parent.onFailure(readyState);
         }
       }
-    })
+    });
   }
 
   render() {
@@ -45,7 +38,7 @@ export default class LoadingButton extends React.Component {
       children,
       className,
       loadingText,
-      buildCommit,
+      getSetVariables,
       ...containerProps
     } = this.props;
 

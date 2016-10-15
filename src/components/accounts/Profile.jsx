@@ -9,6 +9,7 @@ import { Col, Button } from "react-bootstrap";
 
 import RelativeDate from '../nodes/relativeDate';
 import CommentAction from '../comments/asUserAction';
+import LoadingButton from '../forms/RelayVariableLoadingButton';
 
 const pageSize = 10;
 
@@ -39,9 +40,11 @@ function renderAction(action, viewer) {
 class Profile extends React.Component {
   state = {}
 
-  loadMore = (e) => {
-    e.preventDefault();
-    this.props.relay.setVariables({pageSize: this.props.relay.variables.pageSize + pageSize});
+  loadMoreActions = () => {
+    return {
+      relay: this.props.relay,
+      variables: {pageSize: this.props.relay.variables.pageSize + pageSize},
+    };
   }
 
   render() {
@@ -67,7 +70,13 @@ class Profile extends React.Component {
             return renderAction(edge.node, viewer);
           })}
 
-          <Button type="submit" onClick={this.loadMore}>Carregar mais</Button>
+          <LoadingButton
+            type="button"
+            getSetVariables={this.loadMoreActions}
+            loadingText="carregando ..."
+          >
+            carregar mais
+          </LoadingButton>
         </Col>
       </div>
     );
