@@ -1,12 +1,11 @@
 import React from 'react';
 import Relay from 'react-relay';
 import ProfileChangeAvatarMutation from './ProfileChangeAvatar.mutation';
-import { Form, FormGroup, FormControl, Col, ControlLabel, Button, Alert } from "react-bootstrap";
+import { Form, FormGroup, Col, ControlLabel, Button, Alert } from "react-bootstrap";
 import { Errors, FormGroupError, HelpBlockError } from '../forms/errors';
 
 class ProfileChangeAvatar extends React.Component {
   state = {avatar: '', errors: [], success: false}
-
 
   handleSubmit = (e) => {
     e.preventDefault();

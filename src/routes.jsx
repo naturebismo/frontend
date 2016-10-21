@@ -28,6 +28,7 @@ import ProfileQueries from './components/accounts/Profile.queries';
 import ProfileEdit from './components/accounts/ProfileEdit';
 
 import Plant from './components/plants/Plant';
+import WhatPlant from './components/plants/WhatPlant';
 
 import Logout from './components/accounts/Logout';
 
@@ -56,6 +57,11 @@ export default (
     <Route
       path="plant"
         component={Plant}
+        queries={ViewerQueries}
+        render={loadingRender} />
+    <Route
+      path="whatplant"
+        component={WhatPlant}
         queries={ViewerQueries}
         render={loadingRender} />
     <Route
