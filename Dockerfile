@@ -17,15 +17,15 @@ ENV LC_COLLATE=pt_BR.UTF-8
 
 ENV NODE_ENV development
 
-RUN git clone --branch multiple-files-upload --quiet https://github.com/nossila/relay.git
-WORKDIR ~/relay
+RUN git clone --branch multiple-files-upload --quiet https://github.com/nossila/relay.git /root/relay
+WORKDIR /root/relay
 RUN npm run build
 
 EXPOSE 8080
 RUN mkdir /app
 COPY . /app
 WORKDIR /app
-RUN npm install ~/relay
+RUN npm install /root/relay
 ENV PATH /app/node_modules/.bin:$PATH
 ADD http://naturebismo.com/public/schema.json /app/schema.json
 
