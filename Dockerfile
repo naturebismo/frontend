@@ -15,6 +15,10 @@ ENV LANGUAGE=pt_BR.UTF-8
 ENV LC_CTYPE=pt_BR.UTF-8
 ENV LC_COLLATE=pt_BR.UTF-8
 
+RUN git clone --branch --quiet multiple-files-upload https://github.com/nossila/relay.git
+WORKDIR ~/relay
+RUN make install
+
 EXPOSE 8080
 RUN mkdir /app
 COPY . /app
