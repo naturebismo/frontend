@@ -27,6 +27,7 @@ RUN mkdir /app
 COPY . /app
 WORKDIR /app
 RUN npm install /root/relay
+RUN npm install
 ENV PATH /app/node_modules/.bin:$PATH
 ADD http://naturebismo.com/public/schema.json /app/schema.json
 
