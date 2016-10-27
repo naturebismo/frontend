@@ -8,7 +8,7 @@ class ProfileLink extends React.Component {
     var user = this.props.user;
     var popover = (<Popover id={`profile_link_${user.id}`}>
       <div className="clearfix">
-        <img src={user.avatar.x140x140} width="40" className="pull-left" style={{marginRight: '10px'}} />
+        <img src={user.avatar.url} width="40" className="pull-left" style={{marginRight: '10px'}} />
         <strong>{user.firstName}</strong><br/>
         Reputação: {user.reputation}
       </div>
@@ -27,8 +27,8 @@ export default Relay.createContainer(ProfileLink, {
         username,
         firstName
         reputation
-        avatar {
-          x140x140
+        avatar(width: 40, height: 40) {
+          url
         }
       }
     `,

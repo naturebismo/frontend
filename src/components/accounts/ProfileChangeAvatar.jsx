@@ -38,7 +38,7 @@ class ProfileChangeAvatar extends React.Component {
       avatar = (<div className="row">
           <Col sm={2}></Col>
           <Col sm={10}>
-            <p><img src={user.avatar.x140x140} width="140" className="img-thumbnail" /></p>
+            <p><img src={user.avatar.url} width="140" className="img-thumbnail" /></p>
           </Col>
         </div>);
     }
@@ -78,8 +78,8 @@ export default Relay.createContainer(ProfileChangeAvatar, {
       fragment on Query {
         id
         me {
-          avatar {
-            x140x140
+          avatar(width: 140, height: 140) {
+            url
           }
         }
         ${ProfileChangeAvatarMutation.getFragment('viewer')},

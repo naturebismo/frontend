@@ -22,8 +22,8 @@ export default class ProfileChangeAvatarMutation extends Relay.Mutation {
             id,
             username,
             isAuthenticated
-            avatar {
-              x140x140
+            avatar(width: 140, height: 140) {
+              url
             }
           }
         }

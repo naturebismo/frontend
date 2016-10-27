@@ -42,7 +42,7 @@ class CommentItem extends React.Component {
       <Media className="list-group-item comments-item">
         <Media.Left>
           <img width={60} height={60} className="img-thumbnail" style={{maxWidth: "60px"}}
-               src={comment.revisionCreated.author.avatar.x140x140}
+               src={comment.revisionCreated.author.avatar.url}
                alt={comment.revisionCreated.author.username} />
         </Media.Left>
         <Media.Body>
@@ -81,8 +81,8 @@ export default Relay.createContainer(CommentItem, {
         },
         revisionCreated {
           author {
-            avatar {
-              x140x140
+            avatar(width: 60, height: 60) {
+              url
             }
             ${ProfileLink.getFragment('user')}
           },

@@ -58,7 +58,7 @@ class Profile extends React.Component {
         />
 
         <Col sm={2}>
-          <img src={user.avatar.x140x140} width="160" className="img-thumbnail" />
+          <img src={user.avatar.url} width="160" className="img-thumbnail" />
         </Col>
         <Col sm={10}>
           <div className="page-header" style={{marginTop: 0}}>
@@ -94,8 +94,8 @@ export default Relay.createContainer(Profile, {
         username
         firstName
         reputation
-        avatar {
-          x140x140
+        avatar(width: 160, height: 160) {
+          url
         }
         actions(first: $pageSize) {
           edges {

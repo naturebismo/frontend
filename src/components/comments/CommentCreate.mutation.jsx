@@ -13,8 +13,8 @@ export default class CommentCreateMutation extends Relay.Mutation {
         id,
         me {
           username,
-          avatar {
-            x140x140
+          avatar(width: 60, height: 60) {
+            url
           }
         }
       }
@@ -73,7 +73,7 @@ export default class CommentCreateMutation extends Relay.Mutation {
             author: {
               username: this.props.viewer.me.username,
               avatar: {
-                x140x140: this.props.viewer.me.avatar.x140x140,
+                url: this.props.viewer.me.avatar.url,
               }
             },
             createdAt: new Date().toJSON(),

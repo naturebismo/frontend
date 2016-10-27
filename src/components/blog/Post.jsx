@@ -58,7 +58,7 @@ class Post extends React.Component {
     }
 
     return (
-      <div className="post-component">
+      <div className="col-xs-12 post-component">
         <article role="article">
           <Helmet
             title={post.title}

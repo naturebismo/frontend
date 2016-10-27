@@ -159,8 +159,8 @@ export default Relay.createContainer(RevisionItem, {
             revisionCreated {
               author {
                 username
-                avatar {
-                  x140x140
+                avatar(width: 60, height: 60) {
+                  url
                 }
               },
               createdAt
