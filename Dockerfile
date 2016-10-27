@@ -19,6 +19,7 @@ ENV NODE_ENV development
 
 RUN git clone --branch multiple-files-upload --quiet https://github.com/nossila/relay.git /root/relay
 WORKDIR /root/relay
+RUN npm install
 RUN npm run build
 
 EXPOSE 8080
