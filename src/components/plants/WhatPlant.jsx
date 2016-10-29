@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import ReactList from "react-list";
 import {FormattedMessage} from 'react-intl';
-import { Media, Button, Col, Form, FormGroup, FormControl, ControlLabel, Modal } from "react-bootstrap";
+import { Media, Button, Col, Form, FormGroup, FormControl, ControlLabel, Modal, InputGroup } from "react-bootstrap";
 
 import LoginRequired from '../accounts/LoginRequired';
 import LoadingButton from '../forms/RelayLoadingButton';
@@ -50,7 +50,8 @@ class SuggestID extends React.Component {
 const pageSize = 10;
 
 class Plant extends React.Component {
-  state = {errors: [], when: '', where: '', notes: ''}
+  state = {errors: [], when: '', where: '', notes: '',
+           showSuggestionModal: false, search: '', 'searched': false}
 
   handleWhenChange = (e) => {
     this.setState({when: e.target.value});
@@ -60,6 +61,29 @@ class Plant extends React.Component {
   }
   handleNotesChange = (e) => {
     this.setState({notes: e.target.value});
+  }
+
+  handleSearchChange = (e) => {
+    this.setState({search: e.target.value});
+
+    if(this.state.search.length > 2){
+      this.props.relay.setVariables({
+        search: this.state.search,
+        searchSize: 10
+      });
+      this.setState({searched: true});
+    } else {
+      this.setState({searched: false});
+    }
+  }
+
+  openSuggestionModal = (e) => {
+    e.preventDefault();
+    this.setState({showSuggestionModal: true});
+  }
+
+  closeSuggestionModal = () => {
+    this.setState({showSuggestionModal: false});
   }
 
   buildCommit = () => {
@@ -82,10 +106,52 @@ class Plant extends React.Component {
   }
 
   render() {
-    var plant = {
-      name: 'Mangifera indica',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Mangoes_pic.jpg/220px-Mangoes_pic.jpg',
+    var searchResults;
+    if(this.props.viewer.allLifeNode.edges.length > 0){
+      searchResults = this.props.viewer.allLifeNode.edges.map(function(edge, i){
+        var life = edge.node;
+        return (<div key={life.id}>{life.title}</div>);
+      });
+    } else {
+      if(this.state.searched){
+        searchResults = (<div>
+          Nada encontrado
+          <Button bsStyle="primary">Adicionar Espécie</Button> com o nome "{this.state.search}"
+        </div>);
+      }
     }
+
+    var suggestionModal = (<Modal show={this.state.showSuggestionModal} onHide={this.closeSuggestionModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Sugerir Identificação</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Você pode sugerir uma Espécie, Gênero ou Família.
+          Por favor, dê preferencia por nomes cientificos mas também pode ser usado nomes comuns e locais.
+          Caso a Espécie não for encontrada ela poderá ser cadastrada.</p>
+          <Form horizontal>
+            <Errors errors={this.state.errors} />
+
+            <FormGroupError errors={this.state.errors} fieldname="name">
+              <Col sm={12}>
+                <InputGroup>
+                  <InputGroup.Addon><i className="fa fa-search" aria-hidden="true"></i></InputGroup.Addon>
+                  <FormControl type="text"
+                                value={this.state.search}
+                                onChange={this.handleSearchChange}
+                                placeholder="Mangifera indica, Mimosa pudica, Musa velutina, Banana..."
+                  />
+                  <HelpBlockError errors={this.state.errors} fieldname="name" />
+                </InputGroup>
+              </Col>
+            </FormGroupError>
+          </Form>
+
+          {searchResults}
+        </Modal.Body>
+      </Modal>);
+
+    var that = this;
 
     var what_are_those = this.props.viewer.allWhatIsThis.edges.map(function(edge, i){
       var what = edge.node;
@@ -114,12 +180,10 @@ class Plant extends React.Component {
           <p>{what.where}</p>
           <p>{what.notes}</p>
           
-          <p>Espécie, Genero ou Familia</p>
           <ul>
             <li>Manga <a href="#">correta</a>, <a href="#">errada</a> (poder anexar motivo do voto</li>
-
           </ul>
-          <Button>
+          <Button onClick={that.openSuggestionModal}>
             Sugerir Indentificação
           </Button>
         </div>
@@ -129,7 +193,7 @@ class Plant extends React.Component {
     return (
       <div className="col-xs-12">
         <Helmet
-          title={plant.name}
+          title="Que Planta?"
         />
 
         <div className="page-header" style={{marginTop: 0}}>
@@ -211,6 +275,8 @@ class Plant extends React.Component {
             </Form>
 
             {what_are_those}
+
+            {suggestionModal}
           </div>
         </div>
       </div>
@@ -220,7 +286,9 @@ class Plant extends React.Component {
 
 export default Relay.createContainer(Plant, {
   initialVariables: {
-    pageSize: pageSize
+    pageSize: pageSize,
+    searchSize: 1,
+    search: '',
   },
   fragments: {
     viewer: () => Relay.QL`
@@ -260,7 +328,15 @@ export default Relay.createContainer(Plant, {
           }
         }
         ${WhatIsThisCreateMutation.getFragment('viewer')},
-        ${LoginRequired.getFragment('viewer')}
+        ${LoginRequired.getFragment('viewer')},
+        allLifeNode(first: $searchSize, search: $search) {
+          edges {
+            node {
+              id
+              title
+            }
+          }
+        }
       }
     `,
   },
