@@ -8,10 +8,13 @@ export default class LoadingButton extends React.Component {
 
   handleOnClick = (e) => {
     e.preventDefault();
-
-    this.setState({isLoading: true});
-
     var commit = this.props.buildCommit();
+    this.handleCommit(commit);
+  }
+
+
+  handleCommit = (commit) => {
+    this.setState({isLoading: true});
 
     var commitUpdateFn;
     if(typeof commit.commitUpdate === 'function') {
